@@ -221,7 +221,7 @@ for (const file of pages) {
   }
   const href = m[1];
   if (!href.endsWith('/')) fail(`canonical without trailing slash: ${href} (${file})`);
-  const relative = file.slice(root.length).replace(/\/index\.html$/, '/');
+  const relative = file.slice(root.length).replace(/^\//, '').replace(/\/index\.html$/, '/');
   const language = relative.match(/^(en|de|it|fr|es)\//)?.[1];
   if (language) {
     const expectedUrl = `https://www.draligianamaffini.com.br/${relative}`;
@@ -237,19 +237,21 @@ for (const language of ['en', 'de', 'it', 'fr', 'es']) {
   if (!existsSync(join(root, language, 'index.html'))) fail(`${language} homepage missing`);
 }
 
+for (const language of ['', 'en', 'de', 'it', 'fr', 'es']) {
+  const file = join(root, language, 'index.html');
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('data-first-visit-dialog')) fail(`onboarding dialog missing: ${language || 'pt-BR'}`);
+  if (!html.includes('data-first-visit-whatsapp')) fail(`onboarding WhatsApp link missing: ${language || 'pt-BR'}`);
+  if (html.includes('<form')) fail(`onboarding must not collect patient data: ${language || 'pt-BR'}`);
+}
+
+const redirects = readFileSync(join(root, '_redirects'), 'utf8');
 for (const path of [
   'primeira-consulta', 'en/first-visit', 'de/erster-termin',
   'it/prima-visita', 'fr/premiere-consultation', 'es/primera-consulta',
 ]) {
-  const file = join(root, path, 'index.html');
-  if (!existsSync(file)) {
-    fail(`onboarding page missing: ${path}`);
-    continue;
-  }
-  const html = readFileSync(file, 'utf8');
-  if (!html.includes('<h1')) fail(`onboarding heading missing: ${path}`);
-  if (!html.includes('wa.me/5541995104424')) fail(`onboarding booking link missing: ${path}`);
-  if (html.includes('<form')) fail(`onboarding must not collect patient data: ${path}`);
+  if (existsSync(join(root, path, 'index.html'))) fail(`old onboarding page still generated: ${path}`);
+  if (!redirects.includes(`/${path}/ `)) fail(`old onboarding redirect missing: ${path}`);
 }
 
 if (failures.length) {

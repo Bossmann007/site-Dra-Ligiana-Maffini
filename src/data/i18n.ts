@@ -50,6 +50,7 @@ const translatedSlugs: Record<Exclude<Locale, 'pt-BR'>, Record<PageId, string>> 
 };
 
 export function localizedPath(locale: Locale, page: PageId): string {
+  if (page === 'firstVisit') return `${localizedPath(locale, 'home')}#primeira-consulta`;
   const slug = locale === 'pt-BR' ? portugueseSlugs[page] : translatedSlugs[locale][page];
   const prefix = locale === 'pt-BR' ? '' : `/${locale}`;
   return `${prefix}/${slug ? `${slug}/` : ''}`;

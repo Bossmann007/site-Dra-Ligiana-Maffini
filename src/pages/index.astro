@@ -7,6 +7,7 @@ import BrandPattern from '../components/BrandPattern.astro';
 import BrandImage from '../components/BrandImage.astro';
 import SpecialtyCardBand from '../components/SpecialtyCardBand.astro';
 import MevPillarsBand from '../components/MevPillarsBand.astro';
+import FirstVisitDialog from '../components/FirstVisitDialog.astro';
 import { site, services } from '../data/site';
 import { photos, homeGallery } from '../data/photos';
 
@@ -29,13 +30,13 @@ const description =
           para continuidade na região metropolitana.
         </p>
         <div class="mt-8 flex flex-wrap gap-3" data-hero-cta>
-          <a href={site.whatsapp} class="btn-primary" target="_blank" rel="noopener noreferrer" data-magnetic>
+          <a href={site.whatsapp} class="btn-primary" target="_blank" rel="noopener noreferrer">
             Agendar pelo WhatsApp
           </a>
           <a href="/abordagem/" class="btn-secondary">Conhecer a abordagem</a>
         </div>
         <p class="prose-site mt-5 max-w-xl text-sm">
-          Primeira vez por aqui? <a href="/primeira-consulta/" class="font-medium text-gold-deep hover:underline">Veja como funciona sua primeira consulta →</a>
+          Primeira vez por aqui? <a href="/#primeira-consulta" class="inline-block min-h-11 py-2 font-medium text-gold-deep hover:underline">Veja como funciona sua primeira consulta →</a>
         </p>
         <p class="prose-site mt-5 max-w-xl text-sm">
           <a href="/medicina-do-estilo-de-vida/" class="font-medium text-gold-deep hover:underline">
@@ -145,11 +146,12 @@ const description =
         WhatsApp {site.phone} · {site.instagram.personalHandle} · {site.address.neighborhood}, {site.address.city}
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href={site.whatsapp} class="btn-primary" target="_blank" rel="noopener noreferrer" data-magnetic>
+        <a href={site.whatsapp} class="btn-primary" target="_blank" rel="noopener noreferrer">
           Falar no WhatsApp
         </a>
         <a href="/contato/" class="btn-secondary">Ver endereço e mapa</a>
       </div>
     </div>
   </section>
+  <FirstVisitDialog locale="pt-BR" />
 </BaseLayout>

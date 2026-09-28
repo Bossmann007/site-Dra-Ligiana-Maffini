@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandPattern from './BrandPattern.astro';
 import Photo from './Photo.astro';
+import FirstVisitDialog from './FirstVisitDialog.astro';
 import { photos } from '../data/photos';
 import { site } from '../data/site';
 import { localizedPath, translations, type Locale, type PageId } from '../data/i18n';
@@ -99,4 +100,5 @@ const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPort
       <a href={localizedPath(locale, 'specialties')} class="mt-5 inline-block font-medium text-gold-deep hover:underline">← {copy.ui.care}</a>
     </section>
   )}
+  {page === 'home' && <FirstVisitDialog locale={locale} />}
 </BaseLayout>

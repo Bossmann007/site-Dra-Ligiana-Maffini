@@ -788,12 +788,6 @@ export function initAnimations(): () => void {
         return;
       }
 
-      const headerTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.2 });
-      headerTl
-        .from('[data-header-logo]', { opacity: 0, y: -16, duration: 0.75 })
-        .from('[data-nav-item]', { opacity: 0, y: -10, stagger: 0.07, duration: 0.5 }, '-=0.4')
-        .from('[data-header-cta]', { opacity: 0, scale: 0.94, duration: 0.45 }, '-=0.25');
-
       const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.35 });
 
       const heroEyebrow = document.querySelector('[data-hero-eyebrow]');
@@ -822,9 +816,6 @@ export function initAnimations(): () => void {
           heroTl.from(heroSubtitle, { opacity: 0, y: 16, duration: 0.55 }, '-=0.25');
         }
       }
-
-      const heroCta = document.querySelector('[data-hero-cta]');
-      if (heroCta) heroTl.from(heroCta.children, { opacity: 0, y: 18, stagger: 0.1, duration: 0.5 }, '-=0.2');
 
       initHeroMedia();
       initParallax();
@@ -906,19 +897,6 @@ export function initAnimations(): () => void {
         },
       });
 
-      const ctaBlock = document.querySelector('[data-cta-block]');
-      if (ctaBlock) {
-        const ctaItems = ctaBlock.querySelectorAll('p, h2, h3, a, img');
-        gsap.from(ctaItems, {
-          opacity: 0,
-          y: 28,
-          duration: 0.75,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: ctaBlock, start: 'top 80%', once: true },
-        });
-      }
-
       const footer = document.querySelector('footer');
       if (footer) {
         gsap.from('[data-footer-reveal]', {
@@ -944,11 +922,15 @@ export function initAnimations(): () => void {
 
 if (typeof document !== 'undefined') {
   let cleanup = initAnimations();
+  let needsInit = false;
   document.addEventListener('astro:before-swap', () => {
     cleanup();
     cleanup = () => undefined;
+    needsInit = true;
   });
   document.addEventListener('astro:page-load', () => {
+    if (!needsInit) return;
     cleanup = initAnimations();
+    needsInit = false;
   });
 }
