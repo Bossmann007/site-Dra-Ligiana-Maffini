@@ -1,6 +1,9 @@
 ---
 import { site } from '../data/site';
 import Logo from './Logo.astro';
+import { localeFromPath, localizedPath, translations } from '../data/i18n';
+const locale = localeFromPath(Astro.url.pathname);
+const ui = locale === 'pt-BR' ? null : translations[locale].ui;
 ---
 
 <footer class="relative overflow-hidden border-t border-line bg-brand-cream">
@@ -9,8 +12,8 @@ import Logo from './Logo.astro';
     <div data-footer-reveal>
       <Logo variant="footer" />
       <p class="mt-4 max-w-md prose-site text-sm">
-        {site.fullName} · {site.specialtyShort}. Consultório particular no Cristo Rei, Curitiba.
-        Teleconsulta para continuidade na região metropolitana.
+        {site.fullName} · {locale === 'pt-BR' ? site.specialtyShort : translations[locale].pages.home.title}.
+        {locale === 'pt-BR' ? ' Consultório particular no Cristo Rei, Curitiba. Teleconsulta para continuidade na região metropolitana.' : ` ${site.address.neighborhood}, ${site.address.city}.`}
       </p>
       <p class="mt-4 text-sm text-ink-soft">
         {site.crm} · {site.rqe}
@@ -19,17 +22,17 @@ import Logo from './Logo.astro';
 
     <div class="space-y-4 text-sm text-ink-soft" data-footer-reveal>
       <p>
-        <span class="block font-medium text-ink">Endereço</span>
-        <a href="/contato/" class="hover:text-gold-deep">{site.address.full}</a>
+        <span class="block font-medium text-ink">{ui?.address ?? 'Endereço'}</span>
+        <a href={localizedPath(locale, 'contact')} class="hover:text-gold-deep">{site.address.full}</a>
       </p>
       <p>
-        <span class="block font-medium text-ink">Contato</span>
+        <span class="block font-medium text-ink">{locale === 'pt-BR' ? 'Contato' : translations[locale].nav[4]}</span>
         <a href={`tel:${site.phoneTel}`} class="hover:text-gold-deep">{site.phone}</a>
         <br />
         <a href={`mailto:${site.email}`} class="hover:text-gold-deep">{site.email}</a>
       </p>
       <p>
-        <span class="block font-medium text-ink">Redes</span>
+        <span class="block font-medium text-ink">{locale === 'pt-BR' ? 'Redes' : 'Instagram'}</span>
         <a href={site.instagram.personal} class="hover:text-gold-deep" target="_blank" rel="noopener noreferrer">
           {site.instagram.personalHandle}
         </a>
@@ -43,11 +46,13 @@ import Logo from './Logo.astro';
 
   <div class="border-t border-line/80">
     <div class="container-site flex flex-col gap-2 py-6 text-xs text-ink-soft sm:flex-row sm:items-center sm:justify-between" data-footer-reveal>
-      <p>© {new Date().getFullYear()} {site.shortName}. Todos os direitos reservados.</p>
+      <p>© {new Date().getFullYear()} {site.shortName}. {ui?.rights ?? 'Todos os direitos reservados.'}</p>
       <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <a href="/privacidade/" class="hover:text-gold-deep">Privacidade (LGPD)</a>
+        <a href={localizedPath(locale, 'firstVisit')} class="hover:text-gold-deep">{locale === 'pt-BR' ? 'Primeira consulta' : translations[locale].nav[5]}</a>
         <span aria-hidden="true">·</span>
-        <span>As informações deste site têm caráter informativo e não substituem consulta médica.</span>
+        <a href={localizedPath(locale, 'privacy')} class="hover:text-gold-deep">{ui?.privacy ?? 'Privacidade'} (LGPD)</a>
+        <span aria-hidden="true">·</span>
+        <span>{ui?.disclaimer ?? 'As informações deste site têm caráter informativo e não substituem consulta médica.'}</span>
       </p>
     </div>
   </div>

@@ -13,15 +13,27 @@ function initEssentialMotion() {
     tracks.forEach((track) => {
       track.style.animationPlayState = 'paused';
     });
-    return;
+  } else {
+    tracks.forEach((track) => {
+      track.addEventListener('pointerenter', () => {
+        track.style.animationPlayState = 'paused';
+      });
+      track.addEventListener('pointerleave', () => {
+        if (track.dataset.paused !== 'true') track.style.animationPlayState = 'running';
+      });
+    });
   }
 
-  tracks.forEach((track) => {
-    track.addEventListener('pointerenter', () => {
-      track.style.animationPlayState = 'paused';
-    });
-    track.addEventListener('pointerleave', () => {
-      track.style.animationPlayState = 'running';
+  document.querySelectorAll<HTMLButtonElement>('[data-motion-toggle]').forEach((button) => {
+    const track = document.getElementById(button.getAttribute('aria-controls') ?? '');
+    if (!track || button.dataset.motionBound === 'true') return;
+    button.dataset.motionBound = 'true';
+
+    button.addEventListener('click', () => {
+      const paused = track.dataset.paused !== 'true';
+      track.dataset.paused = String(paused);
+      track.style.animationPlayState = paused || prefersReducedMotion() ? 'paused' : 'running';
+      button.textContent = paused ? 'Retomar galeria' : 'Pausar galeria';
     });
   });
 }

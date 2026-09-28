@@ -1,0 +1,12 @@
+---
+import LocalizedPage from '../../components/LocalizedPage.astro';
+import { locales, type Locale } from '../../data/i18n';
+
+export function getStaticPaths() {
+  return locales.filter((locale) => locale !== 'pt-BR').map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Exclude<Locale, 'pt-BR'>;
+---
+
+<LocalizedPage locale={locale} page="home" />

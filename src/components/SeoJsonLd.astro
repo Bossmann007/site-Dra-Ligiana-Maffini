@@ -2,6 +2,7 @@
 import { site, bio, availableLanguages } from '../data/site';
 import { physicianKnowsAbout } from '../data/specialties';
 import { withTrailingSlash } from '../lib/paths';
+import { localizedPath, locales, pageFromPath, translations, type Locale } from '../data/i18n';
 
 type FaqItem = {
   question: string;
@@ -17,9 +18,10 @@ interface Props {
   includeMedicalWebPage?: boolean;
   /** MedicalWebPage.about topic (tema + Curitiba). Physician.knowsAbout stays global. */
   aboutTopic?: string;
+  locale?: Locale;
 }
 
-const { description, path = '', faqItems, includeMedicalWebPage = false, aboutTopic } = Astro.props;
+const { description, path = '', faqItems, includeMedicalWebPage = false, aboutTopic, locale = 'pt-BR' } = Astro.props;
 const pagePath = withTrailingSlash(path);
 const pageUrl = new URL(pagePath, site.url).href;
 const imageUrl = new URL('/og.jpg', site.url).href;
@@ -58,32 +60,9 @@ const areaServed = [
 const mapUrl = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
 
 const breadcrumbItems = (() => {
-  const items: { name: string; item: string }[] = [
-    { name: 'Início', item: new URL('/', site.url).href },
-  ];
-  if (pagePath === '/') return items;
-
-  const segments = pagePath.split('/').filter(Boolean);
-  let acc = '';
-  for (const segment of segments) {
-    acc += `/${segment}`;
-    const href = new URL(withTrailingSlash(acc), site.url).href;
-    const label =
-      segment === 'especialidades'
-        ? 'Especialidades'
-        : segment === 'pilares'
-          ? 'Pilares MEV'
-          : segment === 'sobre'
-            ? 'Sobre'
-            : segment === 'abordagem'
-              ? 'Abordagem'
-              : segment === 'contato'
-                ? 'Contato'
-                : segment === 'privacidade'
-                  ? 'Privacidade'
-                  : Astro.props.title;
-    items.push({ name: label, item: href });
-  }
+  const homeName = locale === 'pt-BR' ? 'Início' : translations[locale].nav[0];
+  const items = [{ name: homeName, item: new URL(localizedPath(locale, 'home'), site.url).href }];
+  if (pageFromPath(pagePath) !== 'home') items.push({ name: Astro.props.title, item: pageUrl });
   return items;
 })();
 
@@ -155,7 +134,7 @@ const graph: Record<string, unknown>[] = [
     '@id': websiteId,
     name: site.name,
     url: site.url,
-    inLanguage: 'pt-BR',
+    inLanguage: [...locales],
     publisher: { '@id': orgId },
   },
   {
@@ -177,7 +156,7 @@ if (includeMedicalWebPage) {
     name: Astro.props.title,
     description,
     url: pageUrl,
-    inLanguage: 'pt-BR',
+    inLanguage: locale,
     isPartOf: { '@id': websiteId },
     author: { '@id': physicianId },
     about: aboutTopic

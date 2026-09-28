@@ -52,16 +52,6 @@
     background-repeat: no-repeat;
   }
 
-  @media (min-width: 768px) {
-    body,
-    .marble-bg,
-    .hero-glow,
-    .marble-surface,
-    .section-marble {
-      background-attachment: fixed;
-    }
-  }
-
   ::selection {
     @apply bg-gold-soft text-ink;
   }
@@ -77,6 +67,8 @@
     --color-ink: #f5f0e8;
     --color-ink-soft: #c4b8a8;
     --color-rose-soft: #2a2418;
+    --color-gold-soft: #352a19;
+    --color-gold-deep: #e2c46a;
     --color-surface: #1c1814;
     --color-line: #3d3428;
   }
@@ -93,7 +85,8 @@
   }
 
   [data-theme='dark'] ::selection {
-    @apply bg-gold-deep text-surface;
+    background-color: #d4af37;
+    color: #12100e;
   }
 }
 
@@ -277,6 +270,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    [data-motion-toggle] {
+      display: none;
+    }
+
     .motion-track--rtl,
     .motion-track--ltr,
     .motion-track--ltr-slow {

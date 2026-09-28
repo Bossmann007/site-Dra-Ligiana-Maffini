@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandPattern from './BrandPattern.astro';
+import Photo from './Photo.astro';
+import { photos } from '../data/photos';
+import { site } from '../data/site';
+import { localizedPath, translations, type Locale, type PageId } from '../data/i18n';
+
+interface Props {
+  locale: Exclude<Locale, 'pt-BR'>;
+  page: PageId;
+}
+
+const { locale, page } = Astro.props;
+const copy = translations[locale];
+const content = copy.pages[page];
+const isCarePage = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'].includes(page);
+const showCare = page === 'home' || page === 'specialties' || page === 'approach';
+const carePages: PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
+const mapSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPortrait : page === 'approach' ? photos.consultation : null;
+---
+
+<BaseLayout title={content.title} description={content.lead} path={localizedPath(locale, page)} includeMedicalWebPage={isCarePage} aboutTopic={isCarePage ? content.title : undefined}>
+  <section class="hero-glow relative overflow-hidden border-b border-line/70">
+    <BrandPattern />
+    <div class:list={['container-site relative grid gap-10 py-16 md:py-24', photo && 'md:grid-cols-[1.05fr_0.95fr] md:items-center']}>
+      <div>
+        <p class="eyebrow">{site.address.neighborhood} · {site.address.city}</p>
+        <h1 class="heading-display mt-4 max-w-3xl text-balance">{content.title}</h1>
+        <p class="prose-site mt-6 max-w-2xl">{content.lead}</p>
+        {page !== 'privacy' && (
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.whatsapp} class="btn-primary" target="_blank" rel="noopener noreferrer">{copy.ui.book}</a>
+            {page !== 'contact' && <a href={localizedPath(locale, page === 'home' ? 'firstVisit' : 'contact')} class="btn-secondary">{page === 'home' ? copy.nav[5] : copy.nav[4]}</a>}
+          </div>
+        )}
+      </div>
+      {photo && (
+        <figure class="photo-frame max-w-lg">
+          <Photo src={photo} alt="Dr. Ligiana Maffini" priority={true} />
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="container-site py-16 md:py-24">
+    <div class="max-w-3xl">
+      <p class="eyebrow">{page === 'privacy' ? copy.ui.privacy : copy.ui.note}</p>
+      <h2 class="heading-section mt-3">{page === 'contact' ? copy.ui.address : page === 'pillars' ? copy.ui.pillars : copy.ui.consultation}</h2>
+      <p class="prose-site mt-5">{content.detail}</p>
+      {page === 'privacy' && <p class="prose-site mt-5">{copy.ui.disclaimer}</p>}
+      {page === 'about' && <p class="prose-site mt-5">{site.crm} · {site.rqe}</p>}
+      {page === 'contact' && (
+        <div class="card-soft mt-8 space-y-3">
+          <p>{site.fullName} · {site.crm} · {site.rqe}</p>
+          <a href={mapLink} class="block font-medium text-gold-deep hover:underline" target="_blank" rel="noopener noreferrer">{site.address.full} · {copy.ui.map}</a>
+          <a href={`tel:${site.phoneTel}`} class="block hover:text-gold-deep">{site.phone}</a>
+          <a href={`mailto:${site.email}`} class="block hover:text-gold-deep">{site.email}</a>
+        </div>
+      )}
+      {page !== 'privacy' && (
+        <div class="card-soft mt-8">
+          <h2 class="font-display text-2xl text-ink">{copy.ui.languagesOfCare}</h2>
+          <p class="prose-site mt-3">{copy.ui.consultationLanguages}</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {showCare && (
+    <section class="section-marble border-y border-line/70 py-16 md:py-24">
+      <div class="container-site">
+        <p class="eyebrow">{copy.ui.care}</p>
+        <h2 class="heading-section mt-3">{copy.pages.specialties.title}</h2>
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {carePages.map((topic) => (
+            <article class="card-soft">
+              <h3 class="font-display text-2xl text-ink">{copy.pages[topic].title}</h3>
+              <p class="prose-site mt-3 text-sm">{copy.pages[topic].lead}</p>
+              <a href={localizedPath(locale, topic)} class="mt-5 inline-block font-medium text-gold-deep hover:underline">{copy.ui.more} →</a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {page === 'contact' && (
+    <section class="container-site pb-16 md:pb-24">
+      <iframe title={`${copy.ui.map}: ${site.address.neighborhood}, ${site.address.city}`} src={mapSrc} width="100%" height="420" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-2xl border border-line"></iframe>
+    </section>
+  )}
+
+  {isCarePage && (
+    <section class="container-site pb-16 md:pb-24">
+      <p class="prose-site max-w-3xl text-sm">{copy.ui.disclaimer}</p>
+      <a href={localizedPath(locale, 'specialties')} class="mt-5 inline-block font-medium text-gold-deep hover:underline">← {copy.ui.care}</a>
+    </section>
+  )}
+</BaseLayout>

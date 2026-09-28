@@ -18,13 +18,23 @@ const { title, eyebrow = 'Na clínica', items } = Astro.props;
 ---
 
 <section class="section-marble relative overflow-hidden border-y border-line py-16 md:py-24" data-photo-strip>
-  <div class="container-site relative z-10 mb-10">
-    <p class="eyebrow" data-eyebrow>{eyebrow}</p>
-    <h2 class="heading-section mt-3 max-w-2xl" data-section-title>{title}</h2>
+  <div class="container-site relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="eyebrow" data-eyebrow>{eyebrow}</p>
+      <h2 class="heading-section mt-3 max-w-2xl" data-section-title>{title}</h2>
+    </div>
+    <button
+      type="button"
+      class="min-h-11 rounded-full border border-line bg-surface px-5 py-2 text-sm font-medium text-ink transition-colors hover:border-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+      data-motion-toggle
+      aria-controls="home-gallery-track"
+    >
+      Pausar galeria
+    </button>
   </div>
 
   <div class="relative z-10 overflow-hidden">
-    <div class="motion-track motion-track--ltr-slow items-start gap-5 pl-5 sm:pl-8 md:gap-6" data-motion-track="gallery">
+    <div id="home-gallery-track" class="motion-track motion-track--ltr-slow items-start gap-5 pl-5 sm:pl-8 md:gap-6" data-motion-track="gallery">
       <div class="motion-group items-start gap-5 md:gap-6">
         {
           items.map((item) => (

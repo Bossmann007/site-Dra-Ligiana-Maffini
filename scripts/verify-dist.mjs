@@ -221,6 +221,35 @@ for (const file of pages) {
   }
   const href = m[1];
   if (!href.endsWith('/')) fail(`canonical without trailing slash: ${href} (${file})`);
+  const relative = file.slice(root.length).replace(/\/index\.html$/, '/');
+  const language = relative.match(/^(en|de|it|fr|es)\//)?.[1];
+  if (language) {
+    const expectedUrl = `https://www.draligianamaffini.com.br/${relative}`;
+    if (!html.includes(`<html lang="${language}"`)) fail(`${relative} has wrong html language`);
+    if (href !== expectedUrl) fail(`${relative} canonical differs from its URL`);
+    if ((html.match(/<link rel="alternate" hreflang=/g) || []).length !== 7) {
+      fail(`${relative} must link to all six languages and x-default`);
+    }
+  }
+}
+
+for (const language of ['en', 'de', 'it', 'fr', 'es']) {
+  if (!existsSync(join(root, language, 'index.html'))) fail(`${language} homepage missing`);
+}
+
+for (const path of [
+  'primeira-consulta', 'en/first-visit', 'de/erster-termin',
+  'it/prima-visita', 'fr/premiere-consultation', 'es/primera-consulta',
+]) {
+  const file = join(root, path, 'index.html');
+  if (!existsSync(file)) {
+    fail(`onboarding page missing: ${path}`);
+    continue;
+  }
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('<h1')) fail(`onboarding heading missing: ${path}`);
+  if (!html.includes('wa.me/5541995104424')) fail(`onboarding booking link missing: ${path}`);
+  if (html.includes('<form')) fail(`onboarding must not collect patient data: ${path}`);
 }
 
 if (failures.length) {

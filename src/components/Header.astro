@@ -2,8 +2,22 @@
 import { nav, site } from '../data/site';
 import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import { languageNames, localeFromPath, localizedPath, locales, pageFromPath, translations, type PageId } from '../data/i18n';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const locale = localeFromPath(Astro.url.pathname);
+const pageId = pageFromPath(Astro.url.pathname) ?? 'home';
+const navPages: PageId[] = ['home', 'about', 'specialties', 'approach', 'contact', 'firstVisit'];
+const menu = locale === 'pt-BR' ? nav : nav.map((_, index) => ({
+  href: localizedPath(locale, navPages[index]),
+  label: translations[locale].nav[index],
+}));
+const ui = locale === 'pt-BR' ? {
+  menu: 'Abrir menu', main: 'Principal', book: 'Agendar consulta', language: 'Escolher idioma do site',
+} : {
+  menu: translations[locale].ui.menu, main: translations[locale].ui.care,
+  book: translations[locale].ui.book, language: translations[locale].ui.switchLanguage,
+};
 
 function isActive(href: string) {
   const normalized = href.replace(/\/$/, '') || '/';
@@ -16,12 +30,12 @@ function isActive(href: string) {
   <div class="container-site flex min-h-16 items-center justify-between gap-4 py-3">
     <Logo />
 
-    <nav class="hidden items-center gap-8 md:flex" aria-label="Principal">
+    <nav class="hidden items-center gap-3 xl:flex" aria-label={ui.main}>
       {
-        nav.map((item) => (
+        menu.map((item) => (
           <a
             href={item.href}
-            class:list={['link-nav', isActive(item.href) && 'link-nav-active']}
+            class:list={['link-nav whitespace-nowrap', isActive(item.href) && 'link-nav-active']}
             aria-current={isActive(item.href) ? 'page' : undefined}
             data-nav-item
           >
@@ -32,6 +46,18 @@ function isActive(href: string) {
     </nav>
 
     <div class="flex items-center gap-2 md:gap-3">
+      <details class="relative" data-nav-item>
+        <summary class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-full border border-line bg-surface px-2 text-xs font-semibold text-ink [&::-webkit-details-marker]:hidden" aria-label={ui.language}>
+          {locale === 'pt-BR' ? 'PT' : locale.toUpperCase()}
+        </summary>
+        <nav class="absolute right-0 z-50 mt-2 w-40 rounded-2xl border border-line bg-surface p-2 shadow-lg" aria-label={ui.language}>
+          {locales.map((item) => (
+            <a href={localizedPath(item, pageId)} lang={item} hreflang={item} aria-current={item === locale ? 'page' : undefined} class:list={['block rounded-lg px-3 py-2 text-sm hover:bg-rose-blush', item === locale && 'font-semibold text-gold-deep']}>
+              {languageNames[item]}
+            </a>
+          ))}
+        </nav>
+      </details>
       <ThemeToggle />
 
       <a
@@ -42,19 +68,19 @@ function isActive(href: string) {
         data-header-cta
         data-magnetic
       >
-        Agendar consulta
+        {ui.book}
       </a>
 
-      <details class="relative md:hidden" data-nav-item>
+      <details class="relative xl:hidden" data-nav-item>
       <summary class="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-full border border-line bg-surface/90 backdrop-blur [&::-webkit-details-marker]:hidden">
-        <span class="sr-only">Abrir menu</span>
+        <span class="sr-only">{ui.menu}</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
         </svg>
       </summary>
-      <nav class="absolute right-0 mt-2 w-52 rounded-2xl border border-line bg-surface p-3 shadow-lg shadow-ink/10" aria-label="Menu mobile">
+      <nav class="absolute right-0 mt-2 w-52 rounded-2xl border border-line bg-surface p-3 shadow-lg shadow-ink/10" aria-label={ui.menu}>
         {
-          nav.map((item) => (
+          menu.map((item) => (
             <a
               href={item.href}
               class:list={[

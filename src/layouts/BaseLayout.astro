@@ -6,6 +6,7 @@ import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import SeoJsonLd from '../components/SeoJsonLd.astro';
 import { site } from '../data/site';
 import { withTrailingSlash } from '../lib/paths';
+import { localeFromPath, localizedPath, locales, pageFromPath, translations } from '../data/i18n';
 
 type FaqItem = {
   question: string;
@@ -33,14 +34,18 @@ const {
 } = Astro.props;
 const seoFaq = faqItems;
 const pagePath = withTrailingSlash(path);
+const locale = localeFromPath(pagePath);
+const pageId = pageFromPath(pagePath);
+const translatedUi = locale === 'pt-BR' ? null : translations[locale].ui;
+const ogLocales = { 'pt-BR': 'pt_BR', en: 'en_US', de: 'de_DE', it: 'it_IT', fr: 'fr_FR', es: 'es_ES' } as const;
 const fullTitle = title === site.name ? title : `${title} · ${site.shortName}`;
 const canonical = new URL(pagePath, site.url).href;
 const ogImage = new URL('/og.jpg', site.url).href;
-const ogImageAlt = `${site.doctor} — ${site.specialtyShort} em ${site.address.city}`;
+const ogImageAlt = `${site.doctor} — ${locale === 'pt-BR' ? site.specialtyShort : translations[locale].pages.home.title}`;
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,7 +53,11 @@ const ogImageAlt = `${site.doctor} — ${site.specialtyShort} em ${site.address.
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={ogLocales[locale]} />
+    {pageId && locales.map((lang) => (
+      <link rel="alternate" hreflang={lang} href={new URL(localizedPath(lang, pageId), site.url).href} />
+    ))}
+    {pageId && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('pt-BR', pageId), site.url).href} />}
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -73,11 +82,12 @@ const ogImageAlt = `${site.doctor} — ${site.specialtyShort} em ${site.address.
       faqItems={seoFaq}
       includeMedicalWebPage={includeMedicalWebPage}
       aboutTopic={aboutTopic}
+      locale={locale}
     />
   </head>
   <body class="min-h-dvh">
     <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">
-      Ir para o conteúdo
+      {translatedUi?.skip ?? 'Ir para o conteúdo'}
     </a>
     <Header />
     <main id="conteudo">
