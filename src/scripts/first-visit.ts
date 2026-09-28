@@ -62,13 +62,17 @@ if (dialog) {
   dialog.addEventListener('close', () => {
     if (window.location.hash === '#primeira-consulta') history.replaceState(null, '', window.location.pathname + window.location.search);
   });
+  const openDialog = () => {
+    if (dialog.open) return;
+    showStep(0);
+    const language = dialog.querySelector<HTMLSelectElement>('[data-first-visit-language]');
+    if (language && document.documentElement.lang === 'pt-BR') language.selectedIndex = 0;
+    dialog.showModal();
+    language?.focus();
+  };
   const openFromHash = () => {
-    if (window.location.hash === '#primeira-consulta' && !dialog.open) {
-      showStep(0);
-      dialog.showModal();
-      dialog.querySelector<HTMLSelectElement>('[data-first-visit-language]')?.focus();
-    }
+    if (window.location.hash === '#primeira-consulta') openDialog();
   };
   window.addEventListener('hashchange', openFromHash);
-  openFromHash();
+  if (document.documentElement.lang === 'pt-BR' || window.location.hash === '#primeira-consulta') openDialog();
 }
