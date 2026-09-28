@@ -243,6 +243,11 @@ for (const language of ['', 'en', 'de', 'it', 'fr', 'es']) {
   if (!html.includes('data-first-visit-dialog')) fail(`onboarding dialog missing: ${language || 'pt-BR'}`);
   if (!html.includes('data-first-visit-whatsapp')) fail(`onboarding WhatsApp link missing: ${language || 'pt-BR'}`);
   if (html.includes('<form')) fail(`onboarding must not collect patient data: ${language || 'pt-BR'}`);
+  const layoutScript = html.match(/src="(\/_astro\/BaseLayout[^"]+\.js)"/)?.[1];
+  if (!layoutScript) fail(`layout script missing: ${language || 'pt-BR'}`);
+  else if (!readFileSync(join(root, layoutScript.slice(1)), 'utf8').includes('data-first-visit-dialog')) {
+    fail(`first-visit opener missing from layout script: ${language || 'pt-BR'}`);
+  }
 }
 
 const redirects = readFileSync(join(root, '_redirects'), 'utf8');
