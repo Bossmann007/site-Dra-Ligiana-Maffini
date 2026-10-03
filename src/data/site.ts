@@ -173,7 +173,7 @@ export const nav = [
   { href: '/especialidades/', label: 'Especialidades' },
   { href: '/abordagem/', label: 'Abordagem' },
   { href: '/contato/', label: 'Contato' },
-  { href: '/#primeira-consulta', label: 'Primeira consulta' },
+  { href: '/primeira-consulta/', label: 'Primeira consulta' },
 ] as const;
 
 export const services = [

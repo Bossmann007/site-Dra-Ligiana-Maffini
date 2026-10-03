@@ -16,6 +16,12 @@ const { specialty } = Astro.props;
 const related = getRelatedSpecialties(specialty.slug);
 const showPilaresCard = showsMevPillarsCard(specialty.slug);
 const path = withTrailingSlash(`/${specialty.slug}`);
+const cluster = [
+  { slug: 'menopausa', href: '/menopausa/', label: 'menopausa' },
+  { slug: 'emagrecimento', href: '/emagrecimento/', label: 'emagrecimento clínico' },
+  { slug: 'saude-da-mulher', href: '/saude-da-mulher/', label: 'saúde da mulher 40+' },
+] as const;
+const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
 ---
 
 <BaseLayout
@@ -51,6 +57,16 @@ const path = withTrailingSlash(`/${specialty.slug}`);
             </div>
           </section>
         ))
+      }
+      {
+        clusterPeers.length === 2 && (
+          <p class="prose-site mt-8">
+            Na mesma consulta de medicina de família também entram{' '}
+            <a href={clusterPeers[0].href} class="font-medium text-gold-deep hover:underline">{clusterPeers[0].label}</a>
+            {' '}e{' '}
+            <a href={clusterPeers[1].href} class="font-medium text-gold-deep hover:underline">{clusterPeers[1].label}</a>.
+          </p>
+        )
       }
     </div>
 

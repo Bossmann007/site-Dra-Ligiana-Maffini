@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
+import { isIndexableUrl } from './src/data/indexing.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,5 +16,9 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => isIndexableUrl(page),
+    }),
+  ],
 });

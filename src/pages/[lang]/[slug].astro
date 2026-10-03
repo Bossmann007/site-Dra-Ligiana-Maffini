@@ -1,10 +1,11 @@
 ---
 import LocalizedPage from '../../components/LocalizedPage.astro';
+import FirstVisitPage from '../../components/FirstVisitPage.astro';
 import { locales, localizedPath, pageIds, type Locale, type PageId } from '../../data/i18n';
 
 export function getStaticPaths() {
   return locales.filter((locale) => locale !== 'pt-BR').flatMap((lang) =>
-    pageIds.filter((page) => page !== 'home' && page !== 'firstVisit').map((page) => ({
+    pageIds.filter((page) => page !== 'home').map((page) => ({
       params: { lang, slug: localizedPath(lang, page).split('/')[2] },
       props: { page },
     })),
@@ -15,4 +16,4 @@ const locale = Astro.params.lang as Exclude<Locale, 'pt-BR'>;
 const page = Astro.props.page as PageId;
 ---
 
-<LocalizedPage locale={locale} page={page} />
+{page === 'firstVisit' ? <FirstVisitPage locale={locale} /> : <LocalizedPage locale={locale} page={page} />}

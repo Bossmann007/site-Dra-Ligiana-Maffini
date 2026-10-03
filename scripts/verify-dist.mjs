@@ -227,9 +227,127 @@ for (const file of pages) {
     const expectedUrl = `https://www.draligianamaffini.com.br/${relative}`;
     if (!html.includes(`<html lang="${language}"`)) fail(`${relative} has wrong html language`);
     if (href !== expectedUrl) fail(`${relative} canonical differs from its URL`);
-    if ((html.match(/<link rel="alternate" hreflang=/g) || []).length !== 7) {
-      fail(`${relative} must link to all six languages and x-default`);
+  }
+}
+
+const origin = 'https://www.draligianamaffini.com.br';
+const expectedSitemap = [
+  `${origin}/`,
+  `${origin}/sobre/`,
+  `${origin}/especialidades/`,
+  `${origin}/abordagem/`,
+  `${origin}/contato/`,
+  `${origin}/primeira-consulta/`,
+  `${origin}/pilares/`,
+  `${origin}/privacidade/`,
+  `${origin}/medicina-de-familia/`,
+  `${origin}/medicina-do-estilo-de-vida/`,
+  `${origin}/prevencao/`,
+  `${origin}/saude-da-mulher/`,
+  `${origin}/menopausa/`,
+  `${origin}/emagrecimento/`,
+  `${origin}/longevidade/`,
+  `${origin}/en/`,
+  `${origin}/en/about/`,
+  `${origin}/en/contact/`,
+  `${origin}/en/family-medicine/`,
+  `${origin}/de/`,
+  `${origin}/de/ueber-uns/`,
+  `${origin}/de/kontakt/`,
+  `${origin}/de/familienmedizin/`,
+  `${origin}/it/`,
+  `${origin}/it/chi-siamo/`,
+  `${origin}/it/contatti/`,
+  `${origin}/it/medicina-di-famiglia/`,
+];
+
+function sitemapLocs() {
+  const locs = [];
+  for (const name of readdirSync(root)) {
+    if (!name.startsWith('sitemap') || !name.endsWith('.xml')) continue;
+    const xml = readFileSync(join(root, name), 'utf8');
+    for (const match of xml.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      if (!match[1].endsWith('.xml')) locs.push(match[1]);
     }
+  }
+  return locs.sort();
+}
+
+if (existsSync(root)) {
+  const locs = sitemapLocs();
+  const expected = [...expectedSitemap].sort();
+  if (locs.join('\n') !== expected.join('\n')) {
+    const missing = expected.filter((url) => !locs.includes(url));
+    const extra = locs.filter((url) => !expected.includes(url));
+    fail(`sitemap mismatch missing=${missing.join(',') || '-'} extra=${extra.join(',') || '-'}`);
+  }
+  for (const file of pages) {
+    const html = readFileSync(file, 'utf8');
+    const canonical = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
+    const robots = html.match(/name="robots" content="([^"]+)"/)?.[1] ?? '';
+    if (!canonical) continue;
+    const listed = locs.includes(canonical);
+    if (robots.startsWith('noindex') && listed) fail(`noindex URL in sitemap: ${canonical}`);
+    if (robots.startsWith('index') && !listed) fail(`indexable URL missing from sitemap: ${canonical}`);
+  }
+}
+
+function hreflangs(html) {
+  return [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((match) => match[1]);
+}
+
+const hreflangCases = [
+  { file: join(root, 'index.html'), langs: ['pt-BR', 'en', 'de', 'it', 'x-default'] },
+  { file: join(root, 'menopausa', 'index.html'), langs: ['pt-BR', 'x-default'] },
+  { file: join(root, 'en', 'index.html'), langs: ['pt-BR', 'en', 'de', 'it', 'x-default'] },
+  { file: join(root, 'fr', 'index.html'), langs: ['pt-BR', 'en', 'de', 'it', 'x-default'] },
+  { file: join(root, 'en', 'menopause', 'index.html'), langs: ['pt-BR', 'x-default'] },
+];
+for (const { file, langs } of hreflangCases) {
+  if (!existsSync(file)) continue;
+  const found = hreflangs(readFileSync(file, 'utf8')).sort();
+  const want = [...langs].sort();
+  if (found.join(',') !== want.join(',')) fail(`${file} hreflang ${found.join(',')} expected ${want.join(',')}`);
+}
+
+const robotsCases = [
+  [join(root, 'fr', 'index.html'), 'noindex, follow'],
+  [join(root, 'es', 'index.html'), 'noindex, follow'],
+  [join(root, 'en', 'menopause', 'index.html'), 'noindex, follow'],
+  [join(root, 'en', 'index.html'), 'index, follow'],
+  [join(root, 'en', 'family-medicine', 'index.html'), 'index, follow'],
+  [join(root, 'menopausa', 'index.html'), 'index, follow'],
+  [join(root, 'primeira-consulta', 'index.html'), 'index, follow'],
+];
+for (const [file, robots] of robotsCases) {
+  if (!existsSync(file)) {
+    fail(`missing ${file}`);
+    continue;
+  }
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes(`name="robots" content="${robots}"`)) fail(`${file} robots expected ${robots}`);
+}
+
+const primeira = join(root, 'primeira-consulta', 'index.html');
+if (existsSync(primeira)) {
+  const html = readFileSync(primeira, 'utf8');
+  if (!html.includes('rel="canonical" href="https://www.draligianamaffini.com.br/primeira-consulta/"')) {
+    fail('primeira-consulta canonical missing');
+  }
+  if (!html.includes('Sua primeira consulta')) fail('primeira-consulta guide heading missing');
+  if (html.includes('<form')) fail('primeira-consulta must not collect patient data');
+}
+
+if (existsSync(home)) {
+  const html = readFileSync(home, 'utf8');
+  if (!html.includes('data-first-visit-open')) fail('home missing first-visit trigger');
+  if (!html.includes('Primeira consulta? Veja como funciona')) fail('home missing first-visit trigger label');
+}
+
+for (const file of pages) {
+  const html = readFileSync(file, 'utf8');
+  for (const h1 of html.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/g) || []) {
+    if (h1.includes('CRM/PR')) fail(`CRM remains inside h1: ${file}`);
   }
 }
 
@@ -245,18 +363,27 @@ for (const language of ['', 'en', 'de', 'it', 'fr', 'es']) {
   if (html.includes('<form')) fail(`onboarding must not collect patient data: ${language || 'pt-BR'}`);
   const layoutScript = html.match(/src="(\/_astro\/BaseLayout[^"]+\.js)"/)?.[1];
   if (!layoutScript) fail(`layout script missing: ${language || 'pt-BR'}`);
-  else if (!readFileSync(join(root, layoutScript.slice(1)), 'utf8').includes('data-first-visit-dialog')) {
-    fail(`first-visit opener missing from layout script: ${language || 'pt-BR'}`);
+  else {
+    const script = readFileSync(join(root, layoutScript.slice(1)), 'utf8');
+    if (!script.includes('data-first-visit-dialog')) {
+      fail(`first-visit opener missing from layout script: ${language || 'pt-BR'}`);
+    }
+    if (language === '') {
+      if (!script.includes('data-first-visit-open')) fail('first-visit trigger handler missing from layout script');
+      if (script.includes('lang==="pt-BR"||') || script.includes("lang==='pt-BR'||")) {
+        fail('first-visit guide still auto-opens on the Portuguese home');
+      }
+    }
   }
 }
 
 const redirects = readFileSync(join(root, '_redirects'), 'utf8');
+if (/\/primeira-consulta\/\s+\//.test(redirects)) fail('primeira-consulta must not redirect to the home');
 for (const path of [
   'primeira-consulta', 'en/first-visit', 'de/erster-termin',
   'it/prima-visita', 'fr/premiere-consultation', 'es/primera-consulta',
 ]) {
-  if (existsSync(join(root, path, 'index.html'))) fail(`old onboarding page still generated: ${path}`);
-  if (!redirects.includes(`/${path}/ `)) fail(`old onboarding redirect missing: ${path}`);
+  if (!existsSync(join(root, path, 'index.html'))) fail(`first-visit page missing: ${path}`);
 }
 
 if (failures.length) {

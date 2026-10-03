@@ -6,6 +6,7 @@ import FirstVisitDialog from './FirstVisitDialog.astro';
 import { photos } from '../data/photos';
 import { site } from '../data/site';
 import { localizedPath, translations, type Locale, type PageId } from '../data/i18n';
+import { robotsFor } from '../data/indexing';
 
 interface Props {
   locale: Exclude<Locale, 'pt-BR'>;
@@ -23,7 +24,7 @@ const mapSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&
 const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPortrait : page === 'approach' ? photos.consultation : null;
 ---
 
-<BaseLayout title={content.title} description={content.lead} path={localizedPath(locale, page)} includeMedicalWebPage={isCarePage} aboutTopic={isCarePage ? content.title : undefined}>
+<BaseLayout title={content.title} description={content.lead} path={localizedPath(locale, page)} robots={robotsFor(locale, page)} includeMedicalWebPage={isCarePage} aboutTopic={isCarePage ? content.title : undefined}>
   <section class="hero-glow relative overflow-hidden border-b border-line/70">
     <BrandPattern />
     <div class:list={['container-site relative grid gap-10 py-16 md:py-24', photo && 'md:grid-cols-[1.05fr_0.95fr] md:items-center']}>

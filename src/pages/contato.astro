@@ -6,7 +6,7 @@ import FaqAccordion from '../components/FaqAccordion.astro';
 import { site, faq, languagesNote, serviceAreaNote } from '../data/site';
 
 const description =
-  'Contato da Dra. Ligiana Maffini em Curitiba: Rua Zeila Moura dos Santos, 101, sala 503, Cristo Rei. CRM/PR 17731. WhatsApp (41) 99510-4424. Presencial neste endereço e teleconsulta para continuidade na região metropolitana.';
+  'Consultório no Cristo Rei, Curitiba: endereço, mapa e WhatsApp da Dra. Ligiana Maffini.';
 
 const mapSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
@@ -39,7 +39,7 @@ const contactItems = [
 ];
 ---
 
-<BaseLayout title="Contato em Curitiba" description={description} path="/contato/" faqItems={faq}>
+<BaseLayout title="Consultório no Cristo Rei, Curitiba" description={description} path="/contato/" faqItems={faq}>
   <section class="hero-glow relative overflow-hidden border-b border-line/70">
     <BrandPattern />
     <div class="container-site relative py-16 md:py-20">
@@ -51,7 +51,7 @@ const contactItems = [
       <p class="prose-site mt-4 max-w-xl" data-hero-subtitle>
         {serviceAreaNote}
       </p>
-      <a href="/#primeira-consulta" class="mt-5 inline-block font-medium text-gold-deep hover:underline">Vai ser sua primeira consulta? Veja o passo a passo →</a>
+      <a href="/primeira-consulta/" class="mt-5 inline-block font-medium text-gold-deep hover:underline">Vai ser sua primeira consulta? Veja o passo a passo →</a>
     </div>
   </section>
 
