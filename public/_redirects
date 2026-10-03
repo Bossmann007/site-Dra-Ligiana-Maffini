@@ -1,7 +1,2 @@
-# O guia de primeira consulta agora abre sobre a página inicial.
-/primeira-consulta/ /#primeira-consulta 301
-/en/first-visit/ /en/#primeira-consulta 301
-/de/erster-termin/ /de/#primeira-consulta 301
-/it/prima-visita/ /it/#primeira-consulta 301
-/fr/premiere-consultation/ /fr/#primeira-consulta 301
-/es/primera-consulta/ /es/#primeira-consulta 301
+# Trailing-slash canonicalization is a single 308 from worker/trailing-slash.ts.
+# html_handling = "force-trailing-slash" still emits 307, so do not duplicate it here.

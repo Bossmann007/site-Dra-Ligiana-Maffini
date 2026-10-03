@@ -12,18 +12,19 @@ import { site, services } from '../data/site';
 import { photos, homeGallery } from '../data/photos';
 
 const description =
-  'Dra. Ligiana Maffini, médica de família em Curitiba (Cristo Rei), com abordagem em medicina do estilo de vida (MEV). CRM/PR 17731. Consultas presenciais e teleconsulta para a região metropolitana.';
+  'Médica de família no Cristo Rei, Curitiba. Consultas presenciais e teleconsulta quando indicada. Agende pelo WhatsApp.';
 ---
 
-<BaseLayout title="Médica de Família em Curitiba · medicina do estilo de vida" description={description} path="/">
+<BaseLayout title="Médica de Família em Curitiba – Cristo Rei" description={description} path="/">
   <section class="hero-glow relative overflow-hidden border-b border-line/70">
     <BrandPattern />
     <div class="container-site relative grid gap-10 py-16 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-24 lg:py-28">
       <div>
         <p class="eyebrow" data-hero-eyebrow>Curitiba · Cristo Rei</p>
         <h1 class="heading-display mt-4 max-w-2xl text-balance" data-hero-title>
-          Dra. Ligiana Maffini, médica de família em Curitiba, com abordagem em medicina do estilo de vida. {site.crm}.
+          Médica de família em Curitiba
         </h1>
+        <p class="mt-3 text-sm text-ink-soft">{site.doctor} · {site.crm} · {site.rqe}</p>
         <p class="prose-site mt-6 max-w-xl" data-hero-subtitle>
           {site.specialtyShort}. Consultas longas em prevenção, saúde da mulher 40+, menopausa,
           emagrecimento clínico e longevidade — presencial no Cristo Rei, em Curitiba, e teleconsulta
@@ -34,6 +35,7 @@ const description =
             Agendar pelo WhatsApp
           </a>
           <a href="/abordagem/" class="btn-secondary">Conhecer a abordagem</a>
+          <a href="#primeira-consulta" class="btn-secondary" data-first-visit-open>Primeira consulta? Veja como funciona</a>
         </div>
         <p class="prose-site mt-5 max-w-xl text-sm">
           <a href="/medicina-do-estilo-de-vida/" class="font-medium text-gold-deep hover:underline">

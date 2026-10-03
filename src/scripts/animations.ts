@@ -7,37 +7,6 @@ function revertSplits() {
   splits.length = 0;
 }
 
-function initEssentialMotion() {
-  const tracks = document.querySelectorAll<HTMLElement>('[data-motion-track]');
-  if (prefersReducedMotion()) {
-    tracks.forEach((track) => {
-      track.style.animationPlayState = 'paused';
-    });
-  } else {
-    tracks.forEach((track) => {
-      track.addEventListener('pointerenter', () => {
-        track.style.animationPlayState = 'paused';
-      });
-      track.addEventListener('pointerleave', () => {
-        if (track.dataset.paused !== 'true') track.style.animationPlayState = 'running';
-      });
-    });
-  }
-
-  document.querySelectorAll<HTMLButtonElement>('[data-motion-toggle]').forEach((button) => {
-    const track = document.getElementById(button.getAttribute('aria-controls') ?? '');
-    if (!track || button.dataset.motionBound === 'true') return;
-    button.dataset.motionBound = 'true';
-
-    button.addEventListener('click', () => {
-      const paused = track.dataset.paused !== 'true';
-      track.dataset.paused = String(paused);
-      track.style.animationPlayState = paused || prefersReducedMotion() ? 'paused' : 'running';
-      button.textContent = paused ? 'Retomar galeria' : 'Pausar galeria';
-    });
-  });
-}
-
 function initParallax() {
   document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
     const trigger = el.closest('section') ?? el.parentElement;
@@ -115,189 +84,6 @@ function initScrollProgress() {
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-function animatePanelOpen(panel: HTMLElement, icon?: HTMLElement | null) {
-  if (prefersReducedMotion()) {
-    panel.hidden = false;
-    panel.style.height = 'auto';
-    panel.style.opacity = '1';
-    if (icon) icon.textContent = '−';
-    return;
-  }
-
-  panel.hidden = false;
-  gsap.set(panel, { height: 'auto', opacity: 0 });
-  const height = panel.offsetHeight;
-  gsap.fromTo(
-    panel,
-    { height: 0, opacity: 0 },
-    {
-      height,
-      opacity: 1,
-      duration: 0.4,
-      ease: 'power3.out',
-      onComplete: () => gsap.set(panel, { height: 'auto' }),
-    },
-  );
-  if (icon) gsap.to(icon, { rotate: 45, duration: 0.25 });
-}
-
-function animatePanelClose(panel: HTMLElement, icon?: HTMLElement | null) {
-  if (prefersReducedMotion()) {
-    panel.hidden = true;
-    panel.style.height = '';
-    panel.style.opacity = '';
-    if (icon) icon.textContent = '+';
-    return;
-  }
-
-  gsap.to(panel, {
-    height: 0,
-    opacity: 0,
-    duration: 0.35,
-    ease: 'power3.inOut',
-    onComplete: () => {
-      panel.hidden = true;
-      gsap.set(panel, { height: '', opacity: '' });
-    },
-  });
-  if (icon) gsap.to(icon, { rotate: 0, duration: 0.25 });
-}
-
-function initFaqAccordion() {
-  document.querySelectorAll('[data-faq-accordion]').forEach((accordion) => {
-    const triggers = accordion.querySelectorAll<HTMLButtonElement>('[data-faq-trigger]');
-
-    triggers.forEach((trigger) => {
-      const item = trigger.closest('[data-faq-item]');
-      const panel = item?.querySelector<HTMLElement>('[data-faq-panel]');
-      const icon = trigger.querySelector<HTMLElement>('[data-faq-icon]');
-      if (!panel) return;
-
-      const close = () => {
-        trigger.setAttribute('aria-expanded', 'false');
-        animatePanelClose(panel, icon);
-      };
-
-      const open = () => {
-        triggers.forEach((other) => {
-          if (other === trigger) return;
-          if (other.getAttribute('aria-expanded') === 'true') {
-            const otherItem = other.closest('[data-faq-item]');
-            const otherPanel = otherItem?.querySelector<HTMLElement>('[data-faq-panel]');
-            const otherIcon = other.querySelector<HTMLElement>('[data-faq-icon]');
-            other.setAttribute('aria-expanded', 'false');
-            if (otherPanel) animatePanelClose(otherPanel, otherIcon);
-          }
-        });
-        trigger.setAttribute('aria-expanded', 'true');
-        animatePanelOpen(panel, icon);
-      };
-
-      trigger.addEventListener('click', () => {
-        if (trigger.getAttribute('aria-expanded') === 'true') close();
-        else open();
-      });
-
-      trigger.addEventListener('keydown', (event) => {
-        const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
-        if (!keys.includes(event.key)) return;
-        event.preventDefault();
-        const list = Array.from(triggers);
-        const index = list.indexOf(trigger);
-        let next = index;
-        if (event.key === 'ArrowDown') next = (index + 1) % list.length;
-        if (event.key === 'ArrowUp') next = (index - 1 + list.length) % list.length;
-        if (event.key === 'Home') next = 0;
-        if (event.key === 'End') next = list.length - 1;
-        list[next]?.focus();
-      });
-    });
-  });
-}
-
-function initFormationTimelineInteractive() {
-  const root = document.querySelector('[data-formation-timeline]');
-  if (!root) return;
-
-  const items = root.querySelectorAll<HTMLElement>('[data-formation-item]');
-
-  items.forEach((item) => {
-    const trigger = item.querySelector<HTMLButtonElement>('[data-formation-trigger]');
-    const panel = item.querySelector<HTMLElement>('[data-formation-panel]');
-    if (!trigger || !panel) return;
-
-    const toggle = (open: boolean) => {
-      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) {
-        panel.hidden = false;
-        panel.dataset.open = 'true';
-        if (prefersReducedMotion()) {
-          panel.style.height = 'auto';
-          panel.style.opacity = '1';
-          return;
-        }
-        gsap.set(panel, { height: 'auto', opacity: 0 });
-        const height = panel.offsetHeight;
-        gsap.fromTo(
-          panel,
-          { height: 0, opacity: 0 },
-          {
-            height,
-            opacity: 1,
-            duration: 0.35,
-            ease: 'power2.out',
-            onComplete: () => gsap.set(panel, { height: 'auto' }),
-          },
-        );
-      } else {
-        panel.dataset.open = 'false';
-        if (prefersReducedMotion()) {
-          panel.hidden = true;
-          return;
-        }
-        gsap.to(panel, {
-          height: 0,
-          opacity: 0,
-          duration: 0.3,
-          ease: 'power2.inOut',
-          onComplete: () => {
-            panel.hidden = true;
-            gsap.set(panel, { height: '', opacity: '' });
-          },
-        });
-      }
-    };
-
-    trigger.addEventListener('click', () => {
-      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
-      items.forEach((other) => {
-        if (other === item) return;
-        const otherTrigger = other.querySelector('[data-formation-trigger]');
-        const otherPanel = other.querySelector<HTMLElement>('[data-formation-panel]');
-        if (otherTrigger?.getAttribute('aria-expanded') === 'true' && otherPanel) {
-          otherTrigger.setAttribute('aria-expanded', 'false');
-          otherPanel.dataset.open = 'false';
-          if (prefersReducedMotion()) otherPanel.hidden = true;
-          else
-            gsap.to(otherPanel, {
-              height: 0,
-              opacity: 0,
-              duration: 0.25,
-              onComplete: () => {
-                otherPanel.hidden = true;
-              },
-            });
-        }
-      });
-      toggle(!isOpen);
-    });
-
-    trigger.addEventListener('pointerenter', () => {
-      if (trigger.getAttribute('aria-expanded') !== 'true') toggle(true);
-    });
-  });
 }
 
 function initFormationTimelineScroll() {
@@ -762,9 +548,6 @@ function safeSplitText(element: HTMLElement, vars: { type: string; aria?: 'auto'
 }
 
 export function initAnimations(): () => void {
-  initEssentialMotion();
-  initFaqAccordion();
-  initFormationTimelineInteractive();
   initServiceCardExpand();
   initMevSegmentToggle();
 
@@ -809,7 +592,7 @@ export function initAnimations(): () => void {
 
       const heroSubtitle = document.querySelector<HTMLElement>('[data-hero-subtitle]');
       if (heroSubtitle) {
-        const subSplit = safeSplitText(heroSubtitle, { type: 'lines', aria: 'auto' });
+        const subSplit = safeSplitText(heroSubtitle, { type: 'lines', aria: 'none' });
         if (subSplit?.lines) {
           heroTl.from(subSplit.lines, { opacity: 0, y: 20, stagger: 0.08, duration: 0.55 }, '-=0.25');
         } else {

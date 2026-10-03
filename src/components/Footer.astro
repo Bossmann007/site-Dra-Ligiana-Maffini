@@ -1,14 +1,18 @@
 ---
 import { site } from '../data/site';
 import Logo from './Logo.astro';
-import { localeFromPath, localizedPath, translations } from '../data/i18n';
+import { careNav, localeFromPath, localizedPath, translations } from '../data/i18n';
 const locale = localeFromPath(Astro.url.pathname);
 const ui = locale === 'pt-BR' ? null : translations[locale].ui;
+const careLinks = careNav.map((item) => ({
+  href: localizedPath(locale, item.page),
+  label: locale === 'pt-BR' ? item.label : translations[locale].pages[item.page].title,
+}));
 ---
 
 <footer class="relative overflow-hidden border-t border-line bg-brand-cream">
-  <div class="pointer-events-none absolute inset-0 opacity-[0.03]" style="background-image:url('/brand/pattern.png');background-size:360px auto;" aria-hidden="true"></div>
-  <div class="container-site relative grid gap-10 py-12 md:grid-cols-[1.4fr_1fr] md:py-16">
+  <div class="pointer-events-none absolute inset-0 opacity-[0.03]" style="background-image:image-set(url('/brand/pattern.webp') type('image/webp'), url('/brand/pattern.png') type('image/png'));background-size:360px auto;" aria-hidden="true"></div>
+  <div class="container-site relative grid gap-10 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:py-16">
     <div data-footer-reveal>
       <Logo variant="footer" />
       <p class="mt-4 max-w-md prose-site text-sm">
@@ -19,6 +23,16 @@ const ui = locale === 'pt-BR' ? null : translations[locale].ui;
         {site.crm} · {site.rqe}
       </p>
     </div>
+
+    <nav class="text-sm" aria-label={ui?.care ?? 'Áreas de cuidado'} data-footer-reveal>
+      <p class="font-medium text-ink">{ui?.care ?? 'Áreas de cuidado'}</p>
+      <ul class="mt-3 space-y-2 text-ink-soft">
+        <li><a href={localizedPath(locale, 'specialties')} class="hover:text-gold-deep">{ui?.care ?? 'Especialidades'}</a></li>
+        {careLinks.map((item) => (
+          <li><a href={item.href} class="hover:text-gold-deep">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
 
     <div class="space-y-4 text-sm text-ink-soft" data-footer-reveal>
       <p>
@@ -40,6 +54,10 @@ const ui = locale === 'pt-BR' ? null : translations[locale].ui;
         <a href={site.instagram.clinic} class="hover:text-gold-deep" target="_blank" rel="noopener noreferrer">
           {site.instagram.clinicHandle}
         </a>
+        <br />
+        <a href={site.doctoralia} class="hover:text-gold-deep" target="_blank" rel="noopener noreferrer">Doctoralia</a>
+        <br />
+        <a href={site.linkedin} class="hover:text-gold-deep" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </p>
     </div>
   </div>
