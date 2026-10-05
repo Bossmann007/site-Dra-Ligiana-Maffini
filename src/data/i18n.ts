@@ -49,8 +49,17 @@ const translatedSlugs: Record<Exclude<Locale, 'pt-BR'>, Record<PageId, string>> 
   },
 };
 
+export const careNav: readonly { page: PageId; label: string }[] = [
+  { page: 'family', label: 'Medicina de família' },
+  { page: 'lifestyle', label: 'Estilo de vida (abordagem)' },
+  { page: 'prevention', label: 'Prevenção' },
+  { page: 'women', label: 'Saúde da mulher' },
+  { page: 'menopause', label: 'Menopausa' },
+  { page: 'weight', label: 'Emagrecimento' },
+  { page: 'longevity', label: 'Longevidade' },
+];
+
 export function localizedPath(locale: Locale, page: PageId): string {
-  if (page === 'firstVisit') return `${localizedPath(locale, 'home')}#primeira-consulta`;
   const slug = locale === 'pt-BR' ? portugueseSlugs[page] : translatedSlugs[locale][page];
   const prefix = locale === 'pt-BR' ? '' : `/${locale}`;
   return `${prefix}/${slug ? `${slug}/` : ''}`;

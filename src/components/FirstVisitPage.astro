@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, languagesNote } from '../data/site';
+import { onboardingCopy } from '../data/onboarding';
+import { localizedPath, translations, type Locale, type PageId } from '../data/i18n';
+import { robotsFor } from '../data/indexing';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = onboardingCopy[locale];
+const carePages: PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
+const portugueseCare: Partial<Record<PageId, string>> = {
+  family: 'Medicina de Família e Comunidade',
+  lifestyle: copy.lifestyle,
+  prevention: 'Prevenção',
+  women: 'Saúde da mulher',
+  menopause: 'Menopausa',
+  weight: 'Emagrecimento clínico',
+  longevity: 'Longevidade',
+};
+const careLabel = (page: PageId) => (locale === 'pt-BR' ? portugueseCare[page] : translations[locale].pages[page].title);
+const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[locale].ui.consultationLanguages;
+const title = locale === 'pt-BR' ? 'Primeira consulta no Cristo Rei' : translations[locale].pages.firstVisit.title;
+const description =
+  locale === 'pt-BR'
+    ? 'Como funciona a primeira consulta no Cristo Rei. Sem formulário neste site. Agendamento pelo WhatsApp.'
+    : translations[locale].pages.firstVisit.lead;
+const whatsappHref = `${site.whatsapp}?text=${encodeURIComponent(copy.messageIntro)}`;
+const privacyNote = copy.editNote.split('. ').slice(1).join('. ');
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={localizedPath(locale, 'firstVisit')}
+  robots={robotsFor(locale, 'firstVisit')}
+>
+  <article id="primeira-consulta" class="container-site max-w-3xl py-16 md:py-24">
+    <p class="eyebrow">01</p>
+    <h1 class="heading-display mt-3">{copy.welcome}</h1>
+    <p class="prose-site mt-6">{copy.intro}</p>
+    <p class="mt-4 text-sm text-ink-soft">{site.fullName} · {site.crm} · {site.rqe} · {site.address.neighborhood}, {site.address.city}</p>
+
+    <section class="mt-12">
+      <h2 class="heading-section text-2xl">{copy.language}</h2>
+      <p class="prose-site mt-4">{consultationLanguages}</p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="heading-section text-2xl">{copy.purpose}</h2>
+      <p class="prose-site mt-4">{copy.about}</p>
+      <p class="prose-site mt-4">{copy.area}</p>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        {
+          carePages.map((page) => (
+            <li>
+              <a href={localizedPath(locale, page)} class="card-soft block hover:border-gold/40">
+                {careLabel(page)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="heading-section text-2xl">{copy.prepareTitle}</h2>
+      <p class="prose-site mt-4">{copy.prepareIntro}</p>
+      <ul class="mt-5 space-y-3">
+        {copy.prepare.map((item) => <li class="flex gap-3 text-ink-soft"><span aria-hidden="true" class="text-gold-deep">✓</span>{item}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="heading-section text-2xl">{copy.contactTitle}</h2>
+      <p class="prose-site mt-4">{copy.contactIntro}</p>
+      <p class="prose-site mt-4">{site.address.full}</p>
+      <p class="mt-4 text-sm font-semibold text-ink">{copy.preview}</p>
+      <p class="mt-2 rounded-xl border border-line bg-gold-soft/30 p-4 text-sm leading-relaxed">{copy.messageIntro}</p>
+      <p class="mt-4 text-sm text-ink-soft">{privacyNote}</p>
+      <a href={whatsappHref} class="btn-primary mt-6" target="_blank" rel="noopener noreferrer">{copy.whatsapp}</a>
+    </section>
+  </article>
+</BaseLayout>

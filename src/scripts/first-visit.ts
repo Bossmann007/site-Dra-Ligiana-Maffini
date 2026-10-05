@@ -70,9 +70,18 @@ if (dialog) {
     dialog.showModal();
     language?.focus();
   };
+  document.querySelectorAll<HTMLAnchorElement>('[data-first-visit-open]').forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      const next = new URL(window.location.href);
+      next.hash = 'primeira-consulta';
+      history.pushState(null, '', `${next.pathname}${next.search}${next.hash}`);
+      openDialog();
+    });
+  });
   const openFromHash = () => {
     if (window.location.hash === '#primeira-consulta') openDialog();
   };
   window.addEventListener('hashchange', openFromHash);
-  if (document.documentElement.lang === 'pt-BR' || window.location.hash === '#primeira-consulta') openDialog();
+  openFromHash();
 }

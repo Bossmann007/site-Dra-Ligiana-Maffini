@@ -6,7 +6,8 @@ import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import SeoJsonLd from '../components/SeoJsonLd.astro';
 import { site } from '../data/site';
 import { withTrailingSlash } from '../lib/paths';
-import { localeFromPath, localizedPath, locales, pageFromPath, translations } from '../data/i18n';
+import { localeFromPath, localizedPath, pageFromPath, translations } from '../data/i18n';
+import { hreflangLocales } from '../data/indexing';
 
 type FaqItem = {
   question: string;
@@ -38,7 +39,8 @@ const locale = localeFromPath(pagePath);
 const pageId = pageFromPath(pagePath);
 const translatedUi = locale === 'pt-BR' ? null : translations[locale].ui;
 const ogLocales = { 'pt-BR': 'pt_BR', en: 'en_US', de: 'de_DE', it: 'it_IT', fr: 'fr_FR', es: 'es_ES' } as const;
-const fullTitle = title === site.name ? title : `${title} · ${site.shortName}`;
+const fullTitle = title === site.name || title.includes(site.shortName) ? title : `${title} · ${site.shortName}`;
+const alternates = pageId ? hreflangLocales(pageId) : [];
 const canonical = new URL(pagePath, site.url).href;
 const ogImage = new URL('/og.jpg', site.url).href;
 const ogImageAlt = `${site.doctor} — ${locale === 'pt-BR' ? site.specialtyShort : translations[locale].pages.home.title}`;
@@ -49,12 +51,13 @@ const ogImageAlt = `${site.doctor} — ${locale === 'pt-BR' ? site.specialtyShor
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" as="image" href="/brand/marble-bg.avif" type="image/avif" fetchpriority="high" />
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocales[locale]} />
-    {pageId && locales.map((lang) => (
+    {pageId && alternates.map((lang) => (
       <link rel="alternate" hreflang={lang} href={new URL(localizedPath(lang, pageId), site.url).href} />
     ))}
     {pageId && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('pt-BR', pageId), site.url).href} />}
@@ -98,15 +101,18 @@ const ogImageAlt = `${site.doctor} — ${locale === 'pt-BR' ? site.specialtyShor
     <script>
       import '../scripts/theme.ts';
       import '../scripts/first-visit.ts';
+      import '../scripts/interactive.ts';
 
       const loadMotion = () => {
         void import('../scripts/animations.ts');
       };
-
-      if (typeof window.requestIdleCallback === 'function') {
-        window.requestIdleCallback(loadMotion, { timeout: 2000 });
-      } else {
-        globalThis.setTimeout(loadMotion, 1);
+      const motionQuery = window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)');
+      if (motionQuery.matches) {
+        if (typeof window.requestIdleCallback === 'function') {
+          window.requestIdleCallback(loadMotion, { timeout: 2000 });
+        } else {
+          globalThis.setTimeout(loadMotion, 1);
+        }
       }
     </script>
   </body>

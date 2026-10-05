@@ -2,15 +2,20 @@
 import { nav, site } from '../data/site';
 import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { languageNames, localeFromPath, localizedPath, locales, pageFromPath, translations, type PageId } from '../data/i18n';
+import { careNav, languageNames, localeFromPath, localizedPath, locales, pageFromPath, translations, type PageId } from '../data/i18n';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const locale = localeFromPath(Astro.url.pathname);
 const pageId = pageFromPath(Astro.url.pathname) ?? 'home';
 const navPages: PageId[] = ['home', 'about', 'specialties', 'approach', 'contact', 'firstVisit'];
-const menu = locale === 'pt-BR' ? nav : nav.map((_, index) => ({
-  href: localizedPath(locale, navPages[index]),
-  label: translations[locale].nav[index],
+const menu = navPages.map((page, index) => ({
+  page,
+  href: localizedPath(locale, page),
+  label: locale === 'pt-BR' ? nav[index].label : translations[locale].nav[index],
+}));
+const careLinks = careNav.map((item) => ({
+  href: localizedPath(locale, item.page),
+  label: locale === 'pt-BR' ? item.label : translations[locale].pages[item.page].title,
 }));
 const ui = locale === 'pt-BR' ? {
   menu: 'Abrir menu', main: 'Principal', book: 'Agendar consulta', language: 'Escolher idioma do site',
@@ -23,6 +28,8 @@ function isActive(href: string) {
   const normalized = href.replace(/\/$/, '') || '/';
   return normalized === currentPath;
 }
+
+const careActive = careLinks.some((item) => isActive(item.href)) || isActive(localizedPath(locale, 'specialties'));
 ---
 
 <header class="sticky top-0 z-40 border-b border-line/80 marble-surface backdrop-blur-md" data-site-header>
@@ -32,7 +39,23 @@ function isActive(href: string) {
 
     <nav class="hidden items-center gap-3 xl:flex" aria-label={ui.main}>
       {
-        menu.map((item) => (
+        menu.map((item) => item.page === 'specialties' ? (
+          <details class="relative" data-nav-item>
+            <summary class:list={['link-nav cursor-pointer list-none whitespace-nowrap [&::-webkit-details-marker]:hidden', careActive && 'link-nav-active']}>
+              {item.label}
+            </summary>
+            <nav class="absolute left-0 z-50 mt-2 w-72 rounded-2xl border border-line bg-surface p-2 shadow-lg" aria-label={item.label}>
+              <a href={item.href} class:list={['block rounded-lg px-3 py-2 text-sm hover:bg-rose-blush', isActive(item.href) && 'font-semibold text-gold-deep']} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+              {careLinks.map((care) => (
+                <a href={care.href} class:list={['block rounded-lg px-3 py-2 text-sm hover:bg-rose-blush', isActive(care.href) && 'font-semibold text-gold-deep']} aria-current={isActive(care.href) ? 'page' : undefined}>
+                  {care.label}
+                </a>
+              ))}
+            </nav>
+          </details>
+        ) : (
           <a
             href={item.href}
             class:list={['link-nav whitespace-nowrap', isActive(item.href) && 'link-nav-active']}
@@ -77,7 +100,7 @@ function isActive(href: string) {
           <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
         </svg>
       </summary>
-      <nav class="absolute right-0 mt-2 w-52 rounded-2xl border border-line bg-surface p-3 shadow-lg shadow-ink/10" aria-label={ui.menu}>
+      <nav class="absolute right-0 mt-2 max-h-[70dvh] w-72 overflow-y-auto rounded-2xl border border-line bg-surface p-3 shadow-lg shadow-ink/10" aria-label={ui.menu}>
         {
           menu.map((item) => (
             <a
@@ -91,6 +114,18 @@ function isActive(href: string) {
             </a>
           ))
         }
+        <p class="mt-3 px-3 text-xs font-medium uppercase tracking-[0.16em] text-gold-deep">{locale === 'pt-BR' ? 'Áreas de cuidado' : translations[locale].ui.care}</p>
+        {careLinks.map((care) => (
+          <a
+            href={care.href}
+            class:list={[
+              'block rounded-xl px-3 py-2 text-sm',
+              isActive(care.href) ? 'bg-gold-soft text-gold-deep' : 'text-ink-soft hover:bg-rose-blush',
+            ]}
+          >
+            {care.label}
+          </a>
+        ))}
         <a href={site.whatsapp} class="btn-primary mt-2 w-full text-sm" target="_blank" rel="noopener noreferrer">
           WhatsApp
         </a>

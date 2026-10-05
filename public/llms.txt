@@ -8,7 +8,7 @@ Site oficial: https://www.draligianamaffini.com.br/
 - CRM/PR 17731 · RQE 37637
 - Especialidade anunciada no CRM: Medicina de Família e Comunidade (título SBMFC 2024)
 - Abordagem em medicina do estilo de vida: formação MevClinic / MevChange (MEV Brasil), integrada à consulta de família — não segunda especialidade
-- Idiomas: consultas e teleconsultas em português. Teleconsulta também pode ser conduzida em inglês, italiano ou alemão, conforme disponibilidade e indicação clínica. Site apenas em português (sem /en /it /de).
+- Idiomas: consultas e teleconsultas em português. Teleconsulta também pode ser conduzida em inglês, italiano ou alemão, conforme disponibilidade e indicação clínica. O site é em português. Inglês, alemão e italiano têm páginas indexáveis só de início, sobre, contato e medicina de família. Francês e espanhol não são idiomas de atendimento; essas páginas existem e estão com noindex.
 
 ## Bio
 
@@ -68,6 +68,7 @@ Página: https://www.draligianamaffini.com.br/pilares/
 ## Mapa de URLs
 
 - https://www.draligianamaffini.com.br/
+- https://www.draligianamaffini.com.br/primeira-consulta/
 - https://www.draligianamaffini.com.br/sobre/
 - https://www.draligianamaffini.com.br/abordagem/
 - https://www.draligianamaffini.com.br/contato/
