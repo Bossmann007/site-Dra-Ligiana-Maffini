@@ -3,9 +3,9 @@ import { site, languagesNote } from '../data/site';
 import { languageNames, localizedPath, translations, type Locale, type PageId } from '../data/i18n';
 import { onboardingCopy } from '../data/onboarding';
 
-interface Props { locale: Locale }
+interface Props { locale: Locale; autoOpen?: boolean }
 
-const { locale } = Astro.props;
+const { locale, autoOpen = false } = Astro.props;
 const copy = onboardingCopy[locale];
 const carePages: PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
 const portugueseCare: Partial<Record<PageId, string>> = {
@@ -22,6 +22,8 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
   class="first-visit-dialog rounded-3xl border border-line bg-surface p-0 text-ink shadow-2xl"
   aria-labelledby="first-visit-title"
   data-first-visit-dialog
+  data-auto-open={autoOpen ? '' : undefined}
+  data-locale={locale}
   data-whatsapp={site.whatsapp}
   data-message-intro={copy.messageIntro}
   data-message-about={copy.messageAbout}
@@ -30,7 +32,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
   <div class="p-6 sm:p-9">
     <div class="flex items-start justify-between gap-4">
       <div>
-        <p class="eyebrow">01 / 04</p>
+        <p class="eyebrow" aria-live="polite" data-first-visit-progress>01 / 04</p>
         <h2 id="first-visit-title" class="font-display mt-2 text-3xl leading-tight sm:text-4xl">{copy.welcome}</h2>
       </div>
       <button type="button" class="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-line text-2xl leading-none hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-gold" aria-label={copy.close} data-first-visit-close>×</button>
@@ -42,7 +44,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
         <label for="first-visit-language" class="mt-7 block font-medium">{copy.language}</label>
         <select id="first-visit-language" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold" data-first-visit-language>
           {(['pt-BR', 'en', 'de', 'it', 'fr', 'es'] as const).map((language) => (
-            <option value={`${localizedPath(language, 'home')}#primeira-consulta`} selected={language === locale}>{languageNames[language]}</option>
+            <option value={`${localizedPath(language, 'home')}#primeira-consulta`} data-lang={language} selected={language === locale}>{languageNames[language]}</option>
           ))}
         </select>
       </section>
@@ -88,7 +90,8 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
 
     <div class="mt-7 flex items-center justify-between border-t border-line pt-5">
       <button type="button" class="btn-secondary" data-first-visit-back hidden>{copy.back}</button>
-      <button type="button" class="btn-primary ml-auto" data-first-visit-next>{copy.next}</button>
+      <a href={`${site.whatsapp}?text=${encodeURIComponent(copy.messageIntro)}`} class="btn-secondary ml-auto mr-3 text-sm" target="_blank" rel="noopener noreferrer" data-first-visit-quick>{copy.whatsapp}</a>
+      <button type="button" class="btn-primary" data-first-visit-next>{copy.next}</button>
     </div>
   </div>
 </dialog>
