@@ -133,7 +133,7 @@ O código atual também gera versões informativas em `/en/`, `/de/`, `/it/`, `/
 
 ## Fotos
 
-Originais em `imagens/`; assets do site em `src/assets/images/` (inclui frames do consultório na home).
+Originais em uso em `imagens/` (os demais não ficam no repositório); assets do site em `src/assets/images/` (inclui frames do consultório na home).
 
 1. Atualize `imagens/` e copie para `src/assets/images/`
 2. Ajuste imports / `photos.ts` conforme necessário
