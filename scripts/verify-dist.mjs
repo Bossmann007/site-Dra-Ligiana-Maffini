@@ -386,6 +386,44 @@ for (const path of [
   if (!existsSync(join(root, path, 'index.html'))) fail(`first-visit page missing: ${path}`);
 }
 
+for (const file of pages) {
+  const html = readFileSync(file, 'utf8');
+  const relative = file.slice(root.length);
+  for (const img of html.match(/<img\b[^>]*>/g) || []) {
+    if (!/\salt(=|\s|>)/.test(img)) fail(`img without alt attribute: ${relative}`);
+  }
+  for (const anchor of html.match(/<a\b[^>]*target="_blank"[^>]*>/g) || []) {
+    if (!/rel="[^"]*noopener/.test(anchor)) fail(`target=_blank without noopener: ${relative}`);
+  }
+  if (html.includes('<form')) fail(`unexpected <form> (site must not collect data): ${relative}`);
+}
+
+const homeHtml = existsSync(home) ? readFileSync(home, 'utf8') : '';
+if (homeHtml && !homeHtml.includes('data-auto-open')) fail('home first-visit dialog lost data-auto-open');
+for (const file of pages) {
+  const html = readFileSync(file, 'utf8');
+  if (html.includes('data-first-visit-dialog') && !/<dialog[^>]*aria-labelledby=/.test(html)) {
+    fail(`first-visit dialog without aria-labelledby: ${file.slice(root.length)}`);
+  }
+}
+
+const headersFile = join(root, '_headers');
+if (existsSync(headersFile)) {
+  const headers = readFileSync(headersFile, 'utf8');
+  for (const name of ['Content-Security-Policy', 'Strict-Transport-Security', 'X-Content-Type-Options', 'Referrer-Policy']) {
+    if (!headers.includes(name)) fail(`_headers missing ${name}`);
+  }
+}
+
+const astroDir = join(root, '_astro');
+if (existsSync(astroDir)) {
+  for (const name of readdirSync(astroDir)) {
+    if (name.endsWith('.js') && statSync(join(astroDir, name)).size > 200 * 1024) {
+      fail(`JS bundle over 200 KB: _astro/${name}`);
+    }
+  }
+}
+
 if (failures.length) {
   console.error('verify-dist FAILED:');
   for (const f of failures) console.error(' -', f);
