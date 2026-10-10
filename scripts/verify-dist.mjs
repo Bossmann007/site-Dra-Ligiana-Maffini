@@ -424,6 +424,17 @@ if (existsSync(astroDir)) {
   }
 }
 
+const privacy = join(root, 'privacidade', 'index.html');
+if (existsSync(privacy)) {
+  const html = readFileSync(privacy, 'utf8');
+  for (const phrase of ['Bases legais', 'localStorage', 'draligiana@draligianamaffini.com']) {
+    if (!html.includes(phrase)) fail(`privacy page missing: ${phrase}`);
+  }
+}
+for (const file of pages) {
+  if (readFileSync(file, 'utf8').includes('<iframe')) fail(`map iframe must load on click, not in static HTML: ${file.slice(root.length)}`);
+}
+
 if (failures.length) {
   console.error('verify-dist FAILED:');
   for (const f of failures) console.error(' -', f);

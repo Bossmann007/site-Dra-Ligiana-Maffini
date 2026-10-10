@@ -1,0 +1,47 @@
+---
+import { site } from '../data/site';
+import { localeFromPath, translations } from '../data/i18n';
+
+const locale = localeFromPath(Astro.url.pathname);
+const strings = {
+  'pt-BR': { load: 'Carregar mapa', note: 'Ao carregar o mapa, o Google recebe o seu endereço IP.', open: 'Abrir no Google Maps', title: 'Mapa da clínica no bairro Cristo Rei, Curitiba' },
+  en: { load: 'Load map', note: 'Loading the map sends your IP address to Google.', open: translations.en.ui.map, title: 'Map of the clinic in Cristo Rei, Curitiba' },
+  de: { load: 'Karte laden', note: 'Beim Laden der Karte erhält Google Ihre IP-Adresse.', open: translations.de.ui.map, title: 'Karte der Praxis in Cristo Rei, Curitiba' },
+  it: { load: 'Carica la mappa', note: 'Caricando la mappa, Google riceve il tuo indirizzo IP.', open: translations.it.ui.map, title: 'Mappa dello studio a Cristo Rei, Curitiba' },
+  fr: { load: 'Charger la carte', note: 'Le chargement de la carte envoie votre adresse IP à Google.', open: translations.fr.ui.map, title: 'Carte du cabinet à Cristo Rei, Curitiba' },
+  es: { load: 'Cargar el mapa', note: 'Al cargar el mapa, Google recibe su dirección IP.', open: translations.es.ui.map, title: 'Mapa del consultorio en Cristo Rei, Curitiba' },
+}[locale];
+
+const embedSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+const openHref = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
+---
+
+<div class="overflow-hidden rounded-2xl border border-line bg-surface shadow-md shadow-ink/10" data-map-embed data-src={embedSrc} data-title={strings.title}>
+  <div class="flex min-h-[20rem] flex-col items-center justify-center gap-4 p-8 text-center" data-map-placeholder>
+    <p class="max-w-sm text-sm text-ink-soft">{strings.note}</p>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <button type="button" class="btn-primary" data-map-load hidden>{strings.load}</button>
+      <a href={openHref} class="btn-secondary" target="_blank" rel="noopener noreferrer">{strings.open}</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map-embed]').forEach((box) => {
+    const button = box.querySelector<HTMLButtonElement>('[data-map-load]');
+    const placeholder = box.querySelector<HTMLElement>('[data-map-placeholder]');
+    if (!button || !placeholder) return;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = box.dataset.src ?? '';
+      frame.title = box.dataset.title ?? '';
+      frame.width = '100%';
+      frame.height = '420';
+      frame.referrerPolicy = 'no-referrer-when-downgrade';
+      frame.className = 'block w-full border-0';
+      placeholder.replaceWith(frame);
+      frame.focus();
+    });
+  });
+</script>
