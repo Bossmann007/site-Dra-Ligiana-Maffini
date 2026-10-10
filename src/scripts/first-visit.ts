@@ -17,7 +17,7 @@ if (dialog) {
     back.hidden = index === 0;
     next.hidden = index === steps.length - 1;
     const progress = dialog.querySelector('.eyebrow');
-    if (progress) progress.textContent = `${String(index + 1).padStart(2, '0')} / 04`;
+    if (progress) progress.textContent = `${String(index + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
     steps[index]?.querySelector<HTMLElement>('[data-step-heading], select')?.focus();
   };
 
@@ -84,4 +84,18 @@ if (dialog) {
   };
   window.addEventListener('hashchange', openFromHash);
   openFromHash();
+
+  // First visit only: wait for the page to settle, skip crawlers/automation, remember the guide was shown.
+  const seenKey = 'first-visit-seen';
+  const seen = () => { try { return localStorage.getItem(seenKey) === '1'; } catch { return true; } };
+  const markSeen = () => { try { localStorage.setItem(seenKey, '1'); } catch { /* private mode */ } };
+  dialog.addEventListener('close', markSeen);
+  const isBot = navigator.webdriver || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent);
+  if (!dialog.open && !isBot && !seen()) {
+    window.setTimeout(() => {
+      if (document.querySelector('dialog[open]')) return;
+      markSeen();
+      openDialog();
+    }, 1500);
+  }
 }
