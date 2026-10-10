@@ -9,6 +9,7 @@ import { photos, aboutGallery } from '../data/photos';
 
 const description =
   'Dra. Ligiana Maffini, médica de família em Curitiba (CRM/PR 17731). Consultório no Cristo Rei e teleconsulta quando indicada.';
+import CareLinks from '../components/CareLinks.astro';
 ---
 
 <BaseLayout title="Dra. Ligiana Maffini, médica de família – CRM/PR 17731" description={description} path="/sobre/">
@@ -79,10 +80,10 @@ const description =
     <div class="container-site relative py-16 md:py-20">
       <p class="eyebrow" data-eyebrow>Na clínica</p>
       <h2 class="heading-section mt-3 max-w-xl" data-section-title>Um ambiente pensado para acolher</h2>
-      <div class="mt-8 flip-gallery-stack" data-flip-grid>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
         {
           aboutGallery.map((item) => (
-            <figure class="photo-frame w-full max-w-sm sm:max-w-none" data-flip-item data-gallery-item>
+            <figure class="photo-frame">
               <Photo src={item.src} alt={item.alt} aspect="square" />
             </figure>
           ))
@@ -92,4 +93,5 @@ const description =
   </section>
 
   <DoctoraliaReview />
+  <CareLinks />
 </BaseLayout>

@@ -1,17 +1,23 @@
 const dialog = document.querySelector<HTMLDialogElement>('[data-first-visit-dialog]');
 
+const query = <T extends HTMLElement>(root: ParentNode, selector: string): T => {
+  const element = root.querySelector<T>(selector);
+  if (!element) throw new Error(`first-visit: missing ${selector}`);
+  return element;
+};
+
 if (dialog) {
   const steps = Array.from(dialog.querySelectorAll<HTMLElement>('[data-first-visit-step]'));
-  const next = dialog.querySelector<HTMLButtonElement>('[data-first-visit-next]')!;
-  const back = dialog.querySelector<HTMLButtonElement>('[data-first-visit-back]')!;
-  const area = dialog.querySelector<HTMLSelectElement>('[data-first-visit-area]')!;
-  const areaLabel = dialog.querySelector<HTMLElement>('[data-first-visit-area-label]')!;
-  const error = dialog.querySelector<HTMLElement>('[data-first-visit-error]')!;
-  const preview = dialog.querySelector<HTMLElement>('[data-first-visit-preview]')!;
-  const quick = dialog.querySelector<HTMLElement>('[data-first-visit-quick]')!;
-  const progress = dialog.querySelector<HTMLElement>('[data-first-visit-progress]')!;
+  const next = query<HTMLButtonElement>(dialog, '[data-first-visit-next]');
+  const back = query<HTMLButtonElement>(dialog, '[data-first-visit-back]');
+  const area = query<HTMLSelectElement>(dialog, '[data-first-visit-area]');
+  const areaLabel = query<HTMLElement>(dialog, '[data-first-visit-area-label]');
+  const error = query<HTMLElement>(dialog, '[data-first-visit-error]');
+  const preview = query<HTMLElement>(dialog, '[data-first-visit-preview]');
+  const quick = query<HTMLElement>(dialog, '[data-first-visit-quick]');
+  const progress = query<HTMLElement>(dialog, '[data-first-visit-progress]');
   const language = dialog.querySelector<HTMLSelectElement>('[data-first-visit-language]');
-  const whatsapp = dialog.querySelector<HTMLAnchorElement>('[data-first-visit-whatsapp]')!;
+  const whatsapp = query<HTMLAnchorElement>(dialog, '[data-first-visit-whatsapp]');
   let activeStep = 0;
 
   const showStep = (index: number) => {

@@ -11,6 +11,8 @@ export const site = {
   phoneTel: '+5541995104424',
   whatsapp: 'https://wa.me/5541995104424',
   email: 'draligianamaffini@gmail.com',
+  /** Canal do titular de dados (LGPD) divulgado em /privacidade/. */
+  privacyEmail: 'draligiana@draligianamaffini.com',
   crm: 'CRM/PR 17731',
   rqe: 'RQE 37637',
   address: {
@@ -72,7 +74,7 @@ export const bio =
   'Médica com mais de 25 anos de experiência na Atenção Primária à Saúde, especialista em Medicina de Família e Comunidade, com formação em Medicina do Estilo de Vida. Atua na prevenção, promoção da saúde, saúde da mulher, menopausa, emagrecimento e longevidade, integrando ciência, humanização e mudança de estilo de vida.';
 
 export const bioNote =
-  'Emagrecimento: acompanhamento clínico baseado em evidências, conforme orientações do CFM — sem promessas de resultado milagroso.';
+  'Emagrecimento: acompanhamento clínico baseado em evidências — sem promessas de resultado milagroso.';
 
 export const formation = [
   {

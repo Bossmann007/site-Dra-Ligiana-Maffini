@@ -129,7 +129,7 @@ export const specialties = [
       {
         heading: 'Limites e responsabilidade',
         paragraphs: [
-          'Conteúdo educativo neste site não substitui consulta médica e não configura diagnóstico à distância, em linha com orientações do CFM. Condutas são definidas após anamnese, exame físico e análise de exames em consulta presencial ou teleconsulta.',
+          'Conteúdo educativo neste site não substitui consulta médica e não configura diagnóstico à distância. Condutas são definidas após anamnese, exame físico e análise de exames em consulta presencial ou teleconsulta.',
         ],
       },
       {
@@ -399,7 +399,7 @@ export const specialties = [
       'Acompanhamento clínico de peso e metabolismo — sem promessa de resultado rápido, com plano médico individualizado.',
     h1: 'Emagrecimento clínico em Curitiba com a Dra. Ligiana Maffini, médica de família',
     lead:
-      'A Dra. Ligiana Maffini Romanus é médica de família em Curitiba e oferece acompanhamento clínico de emagrecimento — avaliação médica, hábitos e metas realistas, sem promessas milagrosas (CFM). Cristo Rei. WhatsApp (41) 99510-4424.',
+      'A Dra. Ligiana Maffini Romanus é médica de família em Curitiba e oferece acompanhamento clínico de emagrecimento — avaliação médica, hábitos e metas realistas, sem promessas milagrosas. Cristo Rei. WhatsApp (41) 99510-4424.',
     metaTitle: 'Emagrecimento médico em Curitiba',
     metaDescription:
       'Acompanhamento médico de emagrecimento em Curitiba, sem promessa de resultado. Consulta de medicina de família no Cristo Rei; agende pelo WhatsApp.',
@@ -444,12 +444,12 @@ export const specialties = [
       {
         question: 'Quem faz acompanhamento de emagrecimento em Curitiba?',
         answer:
-          'A Dra. Ligiana Maffini, médica de família (CRM/PR 17731), oferece acompanhamento clínico de peso e metabolismo no Cristo Rei — sem promessa de resultado milagroso (CFM).',
+          'A Dra. Ligiana Maffini, médica de família (CRM/PR 17731), oferece acompanhamento clínico de peso e metabolismo no Cristo Rei — sem promessa de resultado milagroso.',
       },
       {
         question: 'A Dra. Ligiana promete emagrecimento rápido?',
         answer:
-          'Não. O acompanhamento é clínico, baseado em evidências e orientações do CFM — sem promessa de resultado milagroso. CRM/PR 17731, Curitiba.',
+          'Não. O acompanhamento é clínico, baseado em evidências — sem promessa de resultado milagroso. CRM/PR 17731, Curitiba.',
       },
       {
         question: 'Emagrecimento inclui medicamento?',

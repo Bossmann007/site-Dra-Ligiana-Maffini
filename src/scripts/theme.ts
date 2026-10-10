@@ -3,7 +3,8 @@ const STORAGE_KEY = 'sitelili-theme';
 export type Theme = 'light' | 'dark';
 
 export function getStoredTheme(): Theme | null {
-  const value = localStorage.getItem(STORAGE_KEY);
+  let value: string | null = null;
+  try { value = localStorage.getItem(STORAGE_KEY); } catch { /* storage blocked */ }
   return value === 'light' || value === 'dark' ? value : null;
 }
 
@@ -18,7 +19,7 @@ export function applyTheme(theme: Theme) {
 
 export function setTheme(theme: Theme) {
   applyTheme(theme);
-  localStorage.setItem(STORAGE_KEY, theme);
+  try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* storage blocked */ }
 }
 
 export function initThemeToggle() {
