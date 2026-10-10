@@ -1,19 +1,12 @@
 ---
 import { site, languagesNote } from '../data/site';
-import { languageNames, localizedPath, translations, type Locale, type PageId } from '../data/i18n';
-import { onboardingCopy } from '../data/onboarding';
+import { languageNames, localizedPath, translations, type Locale } from '../data/i18n';
+import { carePages, careLabel, onboardingCopy } from '../data/onboarding';
 
 interface Props { locale: Locale; autoOpen?: boolean }
 
 const { locale, autoOpen = false } = Astro.props;
 const copy = onboardingCopy[locale];
-const carePages: PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
-const portugueseCare: Partial<Record<PageId, string>> = {
-  family: 'Medicina de Família e Comunidade', lifestyle: copy.lifestyle,
-  prevention: 'Prevenção', women: 'Saúde da mulher', menopause: 'Menopausa',
-  weight: 'Emagrecimento clínico', longevity: 'Longevidade',
-};
-const careLabel = (page: PageId) => locale === 'pt-BR' ? portugueseCare[page] : translations[locale].pages[page].title;
 const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[locale].ui.consultationLanguages;
 ---
 
@@ -64,7 +57,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
         <label for="first-visit-area" class="mt-5 block font-medium" data-first-visit-area-label hidden>{copy.areaPlaceholder}</label>
         <select id="first-visit-area" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold-deep" data-first-visit-area hidden disabled>
           <option value="">{copy.areaPlaceholder}</option>
-          {carePages.map((page) => <option value={page}>{careLabel(page)}</option>)}
+          {carePages.map((page) => <option value={page}>{careLabel(locale, page)}</option>)}
         </select>
         <p class="mt-3 text-sm text-ink-soft" role="alert" data-first-visit-error hidden></p>
       </section>

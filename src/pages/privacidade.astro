@@ -14,7 +14,7 @@ const description =
       <p class="eyebrow">Privacidade</p>
       <h1 class="heading-display mt-3 max-w-2xl">Política de privacidade</h1>
       <p class="prose-site mt-4 max-w-xl text-sm text-ink-soft">
-        Última atualização: agosto de 2026 · Lei Geral de Proteção de Dados (LGPD)
+        Última atualização: outubro de 2026 · Lei Geral de Proteção de Dados (LGPD)
       </p>
     </div>
   </section>
@@ -24,7 +24,7 @@ const description =
       <div>
         <h2 class="heading-section text-2xl">Responsável</h2>
         <p class="mt-3">
-          {site.fullName}, {site.crm}, titular do tratamento de dados relacionados a este site
+          {site.fullName}, {site.crm}, controladora dos dados tratados em relação a este site
           institucional. Contato para privacidade e exercício de direitos (LGPD):
           <a href={`mailto:${site.email}`} class="font-medium text-gold-deep hover:underline">{site.email}</a>.
         </p>
@@ -40,6 +40,21 @@ const description =
         <p class="mt-3">
           Agendamento e conversas clínicas ocorrem fora deste site — em geral pelo WhatsApp ({site.phone})
           ou e-mail — e seguem a política de privacidade desses serviços (Meta/WhatsApp, provedor de e-mail).
+        </p>
+      </div>
+
+      <div>
+        <h2 class="heading-section text-2xl">Armazenamento no seu navegador</h2>
+        <p class="mt-3">
+          O site guarda no seu aparelho, via <code>localStorage</code>, duas preferências: o tema claro/escuro
+          (<code>sitelili-theme</code>) e o aviso de que o guia da primeira consulta já foi exibido
+          (<code>first-visit-seen</code>). Esses dados não são enviados a ninguém e podem ser apagados nas
+          configurações do navegador.
+        </p>
+        <p class="mt-3">
+          O guia da primeira consulta pode preencher uma mensagem de WhatsApp com o tema que você escolheu
+          (por exemplo, menopausa ou emagrecimento). Esse texto só é compartilhado com o WhatsApp/Meta quando
+          você abre o WhatsApp, e você pode editá-lo antes de enviar. O site não guarda suas respostas.
         </p>
       </div>
 
@@ -67,8 +82,10 @@ const description =
           </li>
         </ul>
         <p class="mt-3 text-sm text-ink-soft">
-          Tipografia autohospedada (sem Google Fonts). Não usamos cookies de rastreamento ou analytics
-          de terceiros neste site.
+          Tipografia autohospedada (sem Google Fonts). Este site não define cookies próprios nem usa analytics
+          de terceiros; o mapa incorporado é do Google e pode definir cookies dele. Cloudflare, Google e Meta
+          podem processar dados em outros países, conforme as políticas de cada um. Este site não mantém
+          banco de dados de visitantes.
         </p>
       </div>
 

@@ -1,4 +1,4 @@
-import type { Locale } from './i18n';
+import { translations, type Locale, type PageId } from './i18n';
 
 type OnboardingCopy = {
   welcome: string;
@@ -88,3 +88,19 @@ export const onboardingCopy: Record<Locale, OnboardingCopy> = {
     next: 'Continuar', back: 'Volver', close: 'Cerrar guía', whatsapp: 'Abrir WhatsApp', start: 'Iniciar la guía interactiva',
   },
 };
+
+export const carePages: readonly PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
+
+const portugueseCare: Partial<Record<PageId, string>> = {
+  family: 'Medicina de Família e Comunidade',
+  prevention: 'Prevenção',
+  women: 'Saúde da mulher',
+  menopause: 'Menopausa',
+  weight: 'Emagrecimento clínico',
+  longevity: 'Longevidade',
+};
+
+export function careLabel(locale: Locale, page: PageId): string | undefined {
+  if (locale !== 'pt-BR') return translations[locale].pages[page].title;
+  return page === 'lifestyle' ? onboardingCopy['pt-BR'].lifestyle : portugueseCare[page];
+}
