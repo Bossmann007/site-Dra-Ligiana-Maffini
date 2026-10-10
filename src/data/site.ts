@@ -11,6 +11,8 @@ export const site = {
   phoneTel: '+5541995104424',
   whatsapp: 'https://wa.me/5541995104424',
   email: 'draligianamaffini@gmail.com',
+  /** Canal do titular de dados (LGPD) divulgado em /privacidade/. */
+  privacyEmail: 'draligiana@draligianamaffini.com',
   crm: 'CRM/PR 17731',
   rqe: 'RQE 37637',
   address: {

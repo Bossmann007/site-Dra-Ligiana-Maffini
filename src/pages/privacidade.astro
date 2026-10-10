@@ -25,8 +25,8 @@ const description =
         <h2 class="heading-section text-2xl">Responsável</h2>
         <p class="mt-3">
           {site.fullName}, {site.crm}, controladora dos dados tratados em relação a este site
-          institucional. Contato para privacidade e exercício de direitos (LGPD):
-          <a href={`mailto:${site.email}`} class="font-medium text-gold-deep hover:underline">{site.email}</a>.
+          institucional. Canal do titular para privacidade e exercício de direitos (LGPD):
+          <a href={`mailto:${site.privacyEmail}`} class="font-medium text-gold-deep hover:underline">{site.privacyEmail}</a>.
         </p>
       </div>
 
@@ -40,6 +40,33 @@ const description =
         <p class="mt-3">
           Agendamento e conversas clínicas ocorrem fora deste site — em geral pelo WhatsApp ({site.phone})
           ou e-mail — e seguem a política de privacidade desses serviços (Meta/WhatsApp, provedor de e-mail).
+        </p>
+      </div>
+
+      <div>
+        <h2 class="heading-section text-2xl">Bases legais</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong>Registros técnicos de acesso</strong> (gerados pela hospedagem): legítimo interesse de
+            segurança e operação do site (LGPD, art. 7º, IX).
+          </li>
+          <li>
+            <strong>Mapa do Google</strong>: carregado somente depois que você clica em “Carregar mapa”, ação
+            que tratamos como seu consentimento para o envio do seu IP ao Google (art. 7º, I).
+          </li>
+          <li>
+            <strong>Guia da primeira consulta e WhatsApp</strong>: o tema que você escolhe pode ir na
+            mensagem, o que pode indicar uma informação de saúde. O aviso aparece antes do botão, a mensagem
+            pode ser editada e o envio é uma escolha sua (consentimento, art. 11, I).
+          </li>
+          <li>
+            <strong>Conversas por WhatsApp ou e-mail</strong>: procedimentos preliminares à consulta (art. 7º, V)
+            e, quando envolverem saúde, tutela da saúde por profissional de saúde (art. 11, II, “f”).
+          </li>
+        </ul>
+        <p class="mt-3 text-sm text-ink-soft">
+          Cloudflare, Google e Meta podem processar dados fora do Brasil, conforme os termos e as políticas de
+          cada um (transferência internacional, art. 33).
         </p>
       </div>
 

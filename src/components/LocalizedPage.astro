@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandPattern from './BrandPattern.astro';
 import Photo from './Photo.astro';
+import MapEmbed from './MapEmbed.astro';
 import FirstVisitDialog from './FirstVisitDialog.astro';
 import { photos } from '../data/photos';
 import { site } from '../data/site';
@@ -20,7 +21,6 @@ const isCarePage = ['family', 'lifestyle', 'prevention', 'women', 'menopause', '
 const showCare = page === 'home' || page === 'specialties' || page === 'approach';
 const carePages: PageId[] = ['family', 'lifestyle', 'prevention', 'women', 'menopause', 'weight', 'longevity'];
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
-const mapSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPortrait : page === 'approach' ? photos.consultation : null;
 ---
 
@@ -91,7 +91,7 @@ const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPort
 
   {page === 'contact' && (
     <section class="container-site pb-16 md:pb-24">
-      <iframe title={`${copy.ui.map}: ${site.address.neighborhood}, ${site.address.city}`} src={mapSrc} width="100%" height="420" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-2xl border border-line"></iframe>
+      <MapEmbed />
     </section>
   )}
 
