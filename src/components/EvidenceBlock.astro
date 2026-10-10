@@ -1,0 +1,32 @@
+---
+import { evidence } from '../data/evidence';
+
+interface Props { slug: string }
+
+const items = evidence[Astro.props.slug] ?? [];
+---
+
+{
+  items.length > 0 && (
+    <section class="mt-16 border-t border-line/70 pt-12" aria-labelledby="dados-fontes">
+      <p class="eyebrow">Fontes públicas</p>
+      <h2 id="dados-fontes" class="heading-section mt-3 text-2xl">Dados e fontes</h2>
+      <ul class="mt-6 space-y-5">
+        {
+          items.map((item) => (
+            <li class="prose-site text-base">
+              <p>{item.text}</p>
+              <p class="mt-1 text-sm text-ink-soft">
+                Fonte: <a href={item.url} class="font-medium text-gold-deep hover:underline" target="_blank" rel="noopener noreferrer">{item.source}</a>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 text-sm text-ink-soft">
+        Números populacionais e recomendações gerais de rastreamento, conferidos nas páginas citadas em 10/10/2026. Eles não
+        indicam o que vale para você: isso se define em consulta. Recomendações oficiais mudam com o tempo.
+      </p>
+    </section>
+  )
+}
