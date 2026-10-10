@@ -37,6 +37,6 @@ Consult these guides before working on related topics:
 - `trailingSlash: 'always'`; shared helper `src/lib/paths.ts` `withTrailingSlash`
 - NAP, CRM/RQE, specialty wording, and FAQs are centralized in `src/data/site.ts`; specialty landings in `src/data/specialties.ts`
 - No patient forms — contact is WhatsApp/email only
-- Home `homeGallery` alternates three Dra. portraits with `clinic-video-1.webp` / `clinic-video-2.webp` / `clinic-video-3.webp`
+- Home `homeGallery` mixes Dra. portraits with the three `clinic-photo-1..3.webp` waiting-room/clinic frames (see `src/data/photos.ts`)
 - Quality gate: `npm run check:site` runs `astro check`, build, and `scripts/verify-dist.mjs`
 - Outside the repo until fixed: apex `draligianamaffini.com.br` DNS → `www`; Doctoralia still contradicts Curitiba NAP / teleconsulta

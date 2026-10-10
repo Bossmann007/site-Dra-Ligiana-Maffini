@@ -25,7 +25,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
   <div class="p-6 sm:p-9">
     <div class="flex items-start justify-between gap-4">
       <div>
-        <p class="eyebrow" aria-live="polite" data-first-visit-progress>01 / 04</p>
+        <p class="eyebrow" data-first-visit-progress>01 / 04</p>
         <h2 id="first-visit-title" class="font-display mt-2 text-3xl leading-tight sm:text-4xl">{copy.welcome}</h2>
       </div>
       <button type="button" class="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-line text-2xl leading-none hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-gold-deep" aria-label={copy.close} data-first-visit-close>×</button>
@@ -43,8 +43,8 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
       </section>
 
       <section data-first-visit-step="1" hidden>
-        <h3 class="font-display text-2xl" tabindex="-1" data-step-heading>{copy.purpose}</h3>
-        <fieldset class="mt-5 space-y-3">
+        <h3 id="first-visit-purpose-title" class="font-display text-2xl" tabindex="-1" data-step-heading>{copy.purpose}</h3>
+        <fieldset class="mt-5 space-y-3" aria-labelledby="first-visit-purpose-title">
           <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-line p-4 hover:border-gold">
             <input type="radio" name="first-visit-purpose" value="about" class="mt-1 accent-gold" data-first-visit-purpose />
             <span>{copy.about}</span>
