@@ -33,7 +33,7 @@ const { title, eyebrow = 'Na clínica', items } = Astro.props;
     </button>
   </div>
 
-  <div class="relative z-10 overflow-hidden">
+  <div class="gallery-viewport relative z-10 overflow-hidden">
     <div id="home-gallery-track" class="motion-track motion-track--ltr-slow items-start gap-5 pl-5 sm:pl-8 md:gap-6" data-motion-track="gallery">
       <div class="motion-group items-start gap-5 md:gap-6">
         {
@@ -44,6 +44,7 @@ const { title, eyebrow = 'Na clínica', items } = Astro.props;
                   src={item.src}
                   alt={item.alt}
                   aspect="fill"
+                  sizes="(min-width: 768px) 280px, (min-width: 640px) 260px, 68vw"
                   class="object-[center_18%] transition-transform duration-700 group-hover:scale-[1.03]"
                 />
               </div>
@@ -61,6 +62,7 @@ const { title, eyebrow = 'Na clínica', items } = Astro.props;
                   src={item.src}
                   alt=""
                   aspect="fill"
+                  sizes="(min-width: 768px) 280px, (min-width: 640px) 260px, 68vw"
                   class="object-[center_18%]"
                 />
               </div>
@@ -72,3 +74,10 @@ const { title, eyebrow = 'Na clínica', items } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-viewport { overflow-x: auto; }
+    .motion-group[aria-hidden='true'] { display: none; }
+  }
+</style>

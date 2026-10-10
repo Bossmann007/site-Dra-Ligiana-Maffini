@@ -25,26 +25,17 @@ const { items } = Astro.props;
             data-formation-dot
             aria-hidden="true"
           ></span>
-          <button
-            type="button"
-            class="formation-timeline__trigger w-full text-left"
-            data-formation-trigger
-            aria-expanded="false"
-          >
-            <span class="font-display text-lg text-ink md:text-xl">{item.title}</span>
-            <span class="mt-1 block text-sm text-gold-deep">{item.institution}</span>
-          </button>
-          <div class="formation-timeline__panel overflow-hidden" data-formation-panel hidden>
-            <p class="prose-site pt-3 text-base">{item.context}</p>
-          </div>
+          <details name="formation-timeline">
+            <summary class="formation-timeline__trigger w-full cursor-pointer text-left">
+              <span class="font-display text-lg text-ink md:text-xl">{item.title}</span>
+              <span class="mt-1 block text-sm text-gold-deep">{item.institution}</span>
+            </summary>
+            <div class="formation-timeline__panel">
+              <p class="prose-site pt-3 text-base">{item.context}</p>
+            </div>
+          </details>
         </li>
       ))
     }
   </ol>
 </div>
-
-<style is:global>
-  .formation-timeline__panel[data-open='true'] {
-    display: block;
-  }
-</style>

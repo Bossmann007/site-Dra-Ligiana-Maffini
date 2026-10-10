@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  title = 'Especialidades',
+  title = 'Áreas de cuidado',
   subtitle = 'Áreas de atuação clínica em Curitiba — cada tema com página própria para consulta de informação.',
   showAllLink = true,
 } = Astro.props;
@@ -17,7 +17,7 @@ const {
 <section class="section-marble border-y border-line/70 py-16 md:py-24">
   <div class="container-site">
     <div class="max-w-2xl" data-reveal>
-      <p class="eyebrow" data-eyebrow>Especialidades</p>
+      <p class="eyebrow" data-eyebrow>Atuação clínica</p>
       <h2 class="heading-section mt-3" data-section-title>{title}</h2>
       <p class="prose-site mt-4">{subtitle}</p>
     </div>
@@ -43,7 +43,7 @@ const {
     {
       showAllLink && (
         <p class="mt-8">
-          <a href="/especialidades/" class="btn-secondary">Ver índice de especialidades</a>
+          <a href="/especialidades/" class="btn-secondary">Ver todas as áreas de cuidado</a>
         </p>
       )
     }

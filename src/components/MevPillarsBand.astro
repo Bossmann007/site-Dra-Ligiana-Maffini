@@ -26,38 +26,19 @@ const {
 
   {
     useAccordion ? (
-      <div class="faq-accordion mt-10 max-w-3xl space-y-3" data-faq-accordion>
+      <div class="faq-accordion mt-10 max-w-3xl space-y-3">
         {mevPillars.map((pillar, index) => (
-          <div class="card-soft overflow-hidden" data-faq-item>
-            <h3>
-              <button
-                type="button"
-                id={`pillar-trigger-${index}`}
-                class="flex w-full items-center justify-between gap-4 py-1 text-left font-display text-lg text-ink"
-                data-faq-trigger
-                aria-expanded="false"
-                aria-controls={`pillar-panel-${index}`}
-              >
-                <span>{pillar.title}</span>
-                <span class="text-gold-deep transition-transform duration-300" data-faq-icon aria-hidden="true">
-                  +
-                </span>
-              </button>
-            </h3>
-            <div
-              id={`pillar-panel-${index}`}
-              class="faq-panel overflow-hidden"
-              data-faq-panel
-              role="region"
-              aria-labelledby={`pillar-trigger-${index}`}
-              hidden
-            >
+          <details class="card-soft overflow-hidden" name="mev-pillars-accordion">
+            <summary id={`pillar-trigger-${index}`} class="cursor-pointer py-1 text-ink">
+              <h3 class="inline font-display text-lg">{pillar.title}</h3>
+            </summary>
+            <div id={`pillar-panel-${index}`} class="faq-panel" role="region" aria-labelledby={`pillar-trigger-${index}`}>
               <p class="prose-site pt-3 text-base">{pillar.clinical}</p>
               <p class="prose-site pb-1 pt-3 text-base">
                 <strong class="text-ink">Na consulta:</strong> {pillar.consultation}
               </p>
             </div>
-          </div>
+          </details>
         ))}
       </div>
     ) : (

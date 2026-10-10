@@ -127,7 +127,7 @@
   }
 
   .btn-primary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-medium text-ink shadow-sm shadow-gold/25 transition-[transform,opacity,box-shadow] hover:scale-[1.02] hover:opacity-95 hover:shadow-md hover:shadow-gold/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-medium text-[#3d2e24] shadow-sm shadow-gold/25 transition-[transform,opacity,box-shadow] hover:scale-[1.02] hover:opacity-95 hover:shadow-md hover:shadow-gold/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold;
   }
 
   .btn-secondary {
@@ -308,5 +308,19 @@
 
   to {
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@layer base {
+  :where(a, button, summary, select, input):focus-visible {
+    outline: 2px solid var(--color-gold-deep);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 }

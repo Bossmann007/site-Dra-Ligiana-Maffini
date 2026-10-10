@@ -170,7 +170,7 @@ export const faq = [
 export const nav = [
   { href: '/', label: 'Início' },
   { href: '/sobre/', label: 'Sobre' },
-  { href: '/especialidades/', label: 'Especialidades' },
+  { href: '/especialidades/', label: 'Áreas de cuidado' },
   { href: '/abordagem/', label: 'Abordagem' },
   { href: '/contato/', label: 'Contato' },
   { href: '/primeira-consulta/', label: 'Primeira consulta' },
