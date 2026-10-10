@@ -101,5 +101,5 @@ const photo = page === 'home' ? photos.hero : page === 'about' ? photos.goldPort
       <a href={localizedPath(locale, 'specialties')} class="mt-5 inline-block font-medium text-gold-deep hover:underline">← {copy.ui.care}</a>
     </section>
   )}
-  {page === 'home' && <FirstVisitDialog locale={locale} />}
+  {page === 'home' && <FirstVisitDialog locale={locale} autoOpen />}
 </BaseLayout>

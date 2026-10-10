@@ -8,6 +8,9 @@ if (dialog) {
   const areaLabel = dialog.querySelector<HTMLElement>('[data-first-visit-area-label]')!;
   const error = dialog.querySelector<HTMLElement>('[data-first-visit-error]')!;
   const preview = dialog.querySelector<HTMLElement>('[data-first-visit-preview]')!;
+  const quick = dialog.querySelector<HTMLElement>('[data-first-visit-quick]')!;
+  const progress = dialog.querySelector<HTMLElement>('[data-first-visit-progress]')!;
+  const language = dialog.querySelector<HTMLSelectElement>('[data-first-visit-language]');
   const whatsapp = dialog.querySelector<HTMLAnchorElement>('[data-first-visit-whatsapp]')!;
   let activeStep = 0;
 
@@ -16,8 +19,8 @@ if (dialog) {
     steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== index; });
     back.hidden = index === 0;
     next.hidden = index === steps.length - 1;
-    const progress = dialog.querySelector('.eyebrow');
-    if (progress) progress.textContent = `${String(index + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
+    quick.hidden = index === steps.length - 1;
+    progress.textContent = `${String(index + 1).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
     steps[index]?.querySelector<HTMLElement>('[data-step-heading], select')?.focus();
   };
 
@@ -41,7 +44,12 @@ if (dialog) {
     whatsapp.href = `${dialog.dataset.whatsapp}?text=${encodeURIComponent(message)}`;
   };
 
+  const chosenLang = () => language?.selectedOptions[0]?.dataset.lang;
   next.addEventListener('click', () => {
+    if (activeStep === 0 && language && chosenLang() !== dialog.dataset.locale) {
+      window.location.href = language.value;
+      return;
+    }
     if (activeStep === 1 && (!selectedPurpose() || (selectedPurpose()?.value === 'area' && !area.value))) {
       error.textContent = selectedPurpose()?.value === 'area' ? area.options[0]?.textContent ?? '' : dialog.querySelector('h3')?.textContent ?? '';
       error.hidden = false;
@@ -62,13 +70,19 @@ if (dialog) {
   dialog.addEventListener('close', () => {
     if (window.location.hash === '#primeira-consulta') history.replaceState(null, '', window.location.pathname + window.location.search);
   });
-  const openDialog = () => {
+  dialog.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement;
+    if (event.key === 'Enter' && !next.hidden && target.matches('input[type="radio"], select')) {
+      event.preventDefault();
+      next.click();
+    }
+  });
+  const openDialog = (startStep = 0) => {
     if (dialog.open) return;
-    showStep(0);
-    const language = dialog.querySelector<HTMLSelectElement>('[data-first-visit-language]');
+    showStep(startStep);
     if (language && document.documentElement.lang === 'pt-BR') language.selectedIndex = 0;
     dialog.showModal();
-    language?.focus();
+    if (startStep === 0) language?.focus();
   };
   document.querySelectorAll<HTMLAnchorElement>('[data-first-visit-open]').forEach((trigger) => {
     trigger.addEventListener('click', (event) => {
@@ -91,11 +105,16 @@ if (dialog) {
   const markSeen = () => { try { localStorage.setItem(seenKey, '1'); } catch { /* private mode */ } };
   dialog.addEventListener('close', markSeen);
   const isBot = navigator.webdriver || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent);
-  if (!dialog.open && !isBot && !seen()) {
+  if (dialog.hasAttribute('data-auto-open') && !dialog.open && !isBot && !seen()) {
     window.setTimeout(() => {
       if (document.querySelector('dialog[open]')) return;
       markSeen();
-      openDialog();
+      // Browser language differs from the page: open on the language step, preselected. Otherwise skip it.
+      const browserLang = navigator.language.slice(0, 2).toLowerCase();
+      const suggested = language?.querySelector<HTMLOptionElement>(`option[data-lang^="${browserLang}"]`);
+      const differs = suggested && suggested.dataset.lang !== dialog.dataset.locale;
+      openDialog(differs ? 0 : 1);
+      if (differs) language!.value = suggested.value;
     }, 1500);
   }
 }

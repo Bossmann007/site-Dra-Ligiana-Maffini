@@ -4,6 +4,7 @@ import { site, languagesNote } from '../data/site';
 import { onboardingCopy } from '../data/onboarding';
 import { localizedPath, translations, type Locale, type PageId } from '../data/i18n';
 import { robotsFor } from '../data/indexing';
+import FirstVisitDialog from './FirstVisitDialog.astro';
 
 interface Props {
   locale: Locale;
@@ -38,10 +39,11 @@ const privacyNote = copy.editNote.split('. ').slice(1).join('. ');
   path={localizedPath(locale, 'firstVisit')}
   robots={robotsFor(locale, 'firstVisit')}
 >
-  <article id="primeira-consulta" class="container-site max-w-3xl py-16 md:py-24">
+  <article id="guia" class="container-site max-w-3xl py-16 md:py-24">
     <p class="eyebrow">01</p>
     <h1 class="heading-display mt-3">{copy.welcome}</h1>
     <p class="prose-site mt-6">{copy.intro}</p>
+    <a href="#primeira-consulta" class="btn-primary mt-6" data-first-visit-open>{copy.start}</a>
     <p class="mt-4 text-sm text-ink-soft">{site.fullName} · {site.crm} · {site.rqe} · {site.address.neighborhood}, {site.address.city}</p>
 
     <section class="mt-12">
@@ -84,4 +86,5 @@ const privacyNote = copy.editNote.split('. ').slice(1).join('. ');
       <a href={whatsappHref} class="btn-primary mt-6" target="_blank" rel="noopener noreferrer">{copy.whatsapp}</a>
     </section>
   </article>
+  <FirstVisitDialog locale={locale} />
 </BaseLayout>
