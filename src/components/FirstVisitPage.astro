@@ -27,7 +27,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
 const title = locale === 'pt-BR' ? 'Primeira consulta no Cristo Rei' : translations[locale].pages.firstVisit.title;
 const description =
   locale === 'pt-BR'
-    ? 'Como funciona a primeira consulta no Cristo Rei. Sem formulário neste site. Agendamento pelo WhatsApp.'
+    ? 'Como funciona a primeira consulta no Cristo Rei, em Curitiba: o que levar e como agendar pelo WhatsApp. Este site não tem formulário.'
     : translations[locale].pages.firstVisit.lead;
 const whatsappHref = `${site.whatsapp}?text=${encodeURIComponent(copy.messageIntro)}`;
 const privacyNote = copy.editNote.split('. ').slice(1).join('. ');
@@ -43,7 +43,7 @@ const privacyNote = copy.editNote.split('. ').slice(1).join('. ');
     <p class="eyebrow">01</p>
     <h1 class="heading-display mt-3">{copy.welcome}</h1>
     <p class="prose-site mt-6">{copy.intro}</p>
-    <a href="#primeira-consulta" class="btn-primary mt-6" data-first-visit-open>{copy.start}</a>
+    <a href="#guia" class="btn-primary mt-6" data-first-visit-open>{copy.start}</a>
     <p class="mt-4 text-sm text-ink-soft">{site.fullName} · {site.crm} · {site.rqe} · {site.address.neighborhood}, {site.address.city}</p>
 
     <section class="mt-12">

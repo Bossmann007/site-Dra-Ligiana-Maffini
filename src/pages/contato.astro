@@ -6,7 +6,7 @@ import FaqAccordion from '../components/FaqAccordion.astro';
 import { site, faq, languagesNote, serviceAreaNote } from '../data/site';
 
 const description =
-  'Consultório no Cristo Rei, Curitiba: endereço, mapa e WhatsApp da Dra. Ligiana Maffini.';
+  'Consultório da Dra. Ligiana Maffini no Cristo Rei, Curitiba: endereço, mapa e WhatsApp para agendar sua consulta de medicina de família.';
 
 const mapSrc = `https://maps.google.com/maps?q=${site.mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 const mapLink = `https://www.google.com/maps/search/?api=1&query=${site.mapQuery}`;
@@ -110,6 +110,7 @@ const contactItems = [
             src={mapSrc}
             width="100%"
             height="420"
+            loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             class="block w-full border-0"
           ></iframe>

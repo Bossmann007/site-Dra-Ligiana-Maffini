@@ -116,10 +116,7 @@
   }
 
   .text-gold-gradient {
-    background: linear-gradient(120deg, #8b6914 0%, #d4af37 45%, #f0e2bc 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--color-gold-deep);
   }
 
   .prose-site {
@@ -127,11 +124,11 @@
   }
 
   .btn-primary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-medium text-[#3d2e24] shadow-sm shadow-gold/25 transition-[transform,opacity,box-shadow] hover:scale-[1.02] hover:opacity-95 hover:shadow-md hover:shadow-gold/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-medium text-[#3d2e24] shadow-sm shadow-gold/25 transition-[transform,opacity,box-shadow] hover:scale-[1.02] hover:opacity-95 hover:shadow-md hover:shadow-gold/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep;
   }
 
   .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line bg-surface/85 px-6 py-3 text-sm font-medium text-ink backdrop-blur-sm transition-colors hover:border-gold hover:bg-gold-soft/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-line bg-surface/85 px-6 py-3 text-sm font-medium text-ink backdrop-blur-sm transition-colors hover:border-gold hover:bg-gold-soft/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep;
   }
 
   .card-soft {
@@ -207,10 +204,7 @@
   }
 
   [data-theme='dark'] .text-gold-gradient {
-    background: linear-gradient(120deg, #f0e2bc 0%, #d4af37 45%, #8b6914 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--color-gold-deep);
   }
 
   [data-theme='dark'] .service-spotlight {

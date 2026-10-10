@@ -48,7 +48,7 @@ npm run check:site   # astro check + build + verify-dist
 
 O site é **100% estático** — sem backend, banco ou `npm` na hospedagem. Não use `@astrojs/cloudflare`.
 
-### A) Cloudflare Pages / Workers Assets (recomendado)
+### Cloudflare Workers Assets
 
 O repo inclui `wrangler.toml` com `[assets]` → `./dist` (404-page + trailing slash).
 
@@ -58,7 +58,7 @@ O repo inclui `wrangler.toml` com `[assets]` → `./dist` (404-page + trailing s
    - **Output:** `dist` (Pages) · deploy `npx wrangler deploy` (Workers Builds)
    - **Node.js:** 22+
 3. Domínio customizado: `www.draligianamaffini.com.br`
-4. Headers: `public/_headers` (Pages). Em Workers Assets, confirme se os headers aplicam ou use Transform Rules.
+4. Headers: `public/_headers` (aplicados em produção em Workers Assets).
 5. Redirects opcionais: `public/_redirects`
 
 **DNS**
@@ -71,13 +71,6 @@ O repo inclui `wrangler.toml` com `[assets]` → `./dist` (404-page + trailing s
 - Não apontar para hosts antigos (ex.: GreatPages)
 
 **`astro.config.mjs`:** `site: https://www.draligianamaffini.com.br`, `trailingSlash: 'always'`, `output: 'static'`, `@astrojs/sitemap`.
-
-### B) Hostinger (estático / `public_html`)
-
-1. Localmente: `npm install` && `npm run build`
-2. Enviar só o conteúdo de `dist/` para `public_html`
-3. Não rodar `npm` no plano compartilhado
-4. `public/.htaccess` → `dist/.htaccess` no build
 
 ## Estrutura do site
 
