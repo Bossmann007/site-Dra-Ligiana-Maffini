@@ -35,14 +35,14 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
         <p class="eyebrow" aria-live="polite" data-first-visit-progress>01 / 04</p>
         <h2 id="first-visit-title" class="font-display mt-2 text-3xl leading-tight sm:text-4xl">{copy.welcome}</h2>
       </div>
-      <button type="button" class="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-line text-2xl leading-none hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-gold" aria-label={copy.close} data-first-visit-close>×</button>
+      <button type="button" class="flex min-h-11 min-w-11 items-center justify-center rounded-full border border-line text-2xl leading-none hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-gold-deep" aria-label={copy.close} data-first-visit-close>×</button>
     </div>
 
     <div class="mt-6 min-h-56">
       <section data-first-visit-step="0">
         <p class="prose-site">{copy.intro}</p>
         <label for="first-visit-language" class="mt-7 block font-medium">{copy.language}</label>
-        <select id="first-visit-language" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold" data-first-visit-language>
+        <select id="first-visit-language" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold-deep" data-first-visit-language>
           {(['pt-BR', 'en', 'de', 'it', 'fr', 'es'] as const).map((language) => (
             <option value={`${localizedPath(language, 'home')}#primeira-consulta`} data-lang={language} selected={language === locale}>{languageNames[language]}</option>
           ))}
@@ -62,7 +62,7 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
           </label>
         </fieldset>
         <label for="first-visit-area" class="mt-5 block font-medium" data-first-visit-area-label hidden>{copy.areaPlaceholder}</label>
-        <select id="first-visit-area" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold" data-first-visit-area hidden disabled>
+        <select id="first-visit-area" class="mt-2 min-h-11 w-full rounded-xl border border-line bg-surface px-4 text-ink focus-visible:outline-2 focus-visible:outline-gold-deep" data-first-visit-area hidden disabled>
           <option value="">{copy.areaPlaceholder}</option>
           {carePages.map((page) => <option value={page}>{careLabel(page)}</option>)}
         </select>

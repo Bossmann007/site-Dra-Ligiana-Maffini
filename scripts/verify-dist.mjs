@@ -109,7 +109,7 @@ const mev = join(root, 'medicina-do-estilo-de-vida', 'index.html');
 if (existsSync(mev)) {
   const html = readFileSync(mev, 'utf8');
   for (const phrase of [
-    'Medicina do estilo de vida · abordagem em Curitiba',
+    'Medicina do estilo de vida em Curitiba',
     'Médica de família com abordagem em medicina do estilo de vida em Curitiba',
     'não especialidade CRM',
     'Quem é a médica com abordagem em medicina do estilo de vida em Curitiba',
