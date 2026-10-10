@@ -12,36 +12,15 @@ interface Props {
 const { items, idPrefix = 'faq' } = Astro.props;
 ---
 
-<div class="faq-accordion space-y-3" data-faq-accordion>
-  {
-    items.map((item, index) => (
-      <div class="card-soft overflow-hidden" data-faq-item>
-        <h3>
-          <button
-            type="button"
-            id={`${idPrefix}-trigger-${index}`}
-            class="flex w-full items-center justify-between gap-4 py-1 text-left font-display text-lg text-ink"
-            data-faq-trigger
-            aria-expanded="false"
-            aria-controls={`${idPrefix}-panel-${index}`}
-          >
-            <span>{item.question}</span>
-            <span class="text-gold-deep transition-transform duration-300" data-faq-icon aria-hidden="true">
-              +
-            </span>
-          </button>
-        </h3>
-        <div
-          id={`${idPrefix}-panel-${index}`}
-          class="faq-panel overflow-hidden"
-          data-faq-panel
-          role="region"
-          aria-labelledby={`${idPrefix}-trigger-${index}`}
-          hidden
-        >
-          <p class="prose-site pb-1 pt-3 text-base">{item.answer}</p>
-        </div>
+<div class="faq-accordion space-y-3">
+  {items.map((item, index) => (
+    <details class="card-soft overflow-hidden" name={`${idPrefix}-accordion`}>
+      <summary id={`${idPrefix}-trigger-${index}`} class="cursor-pointer py-1 text-ink">
+        <h3 class="inline font-display text-lg">{item.question}</h3>
+      </summary>
+      <div id={`${idPrefix}-panel-${index}`} class="faq-panel" role="region" aria-labelledby={`${idPrefix}-trigger-${index}`}>
+        <p class="prose-site pb-1 pt-3 text-base">{item.answer}</p>
       </div>
-    ))
-  }
+    </details>
+  ))}
 </div>

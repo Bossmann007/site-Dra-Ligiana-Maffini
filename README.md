@@ -91,6 +91,8 @@ O repo inclui `wrangler.toml` com `[assets]` → `./dist` (404-page + trailing s
 | Especialidades (índice) | `/especialidades/` |
 | Pilares MEV | `/pilares/` |
 
+O código atual também gera versões informativas em `/en/`, `/de/`, `/it/`, `/fr/` e `/es/`, com canonical próprio e hreflang recíproco. SEO em todos os seis idiomas foi solicitado pelo Enzo; traduções clínicas ainda requerem revisão da médica e não ampliam os idiomas de atendimento. `llms.txt` é gerado em `src/pages/llms.txt.ts` a partir dos dados centrais.
+
 ### Landings de atuação (GEO / Curitiba)
 
 | Tema | Rota | Nota |
@@ -117,7 +119,7 @@ O repo inclui `wrangler.toml` com `[assets]` → `./dist` (404-page + trailing s
 ## Conteúdo e conformidade
 
 - NAP, CRM, RQE, idiomas e `serviceArea` em `src/data/site.ts`
-- JSON-LD: `Physician` + `MedicalBusiness` (+ FAQ / breadcrumbs conforme a página)
+- JSON-LD: `Person` (médica) + `MedicalBusiness` / `Physician` (consultório) (+ FAQ / breadcrumbs conforme a página)
 - Footer com endereço completo em toda página
 - Sem preços, horários ou depoimentos inventados
 - YMYL: não inventar fontes de rodapé nem datas de revisão clínica sem confirmação da doutora

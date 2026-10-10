@@ -93,6 +93,18 @@ const consultationLanguages = locale === 'pt-BR' ? languagesNote : translations[
   </div>
 </dialog>
 
+<noscript>
+  <section class="container-site py-12">
+    <h2 class="heading-section">{copy.welcome}</h2>
+    <p class="prose-site mt-4">{copy.prepareIntro}</p>
+    <ul class="prose-site mt-4 list-disc space-y-2 pl-5">
+      {copy.prepare.map((item) => <li>{item}</li>)}
+    </ul>
+    <p class="prose-site mt-4">{consultationLanguages}</p>
+    <a href={site.whatsapp} class="btn-primary mt-6" target="_blank" rel="noopener noreferrer">{copy.whatsapp}</a>
+  </section>
+</noscript>
+
 <style>
   .first-visit-dialog { position: fixed; inset: 0; margin: auto; width: min(calc(100% - 2rem), 42rem); max-height: min(90dvh, 52rem); overflow-y: auto; }
   .first-visit-dialog::backdrop { background: rgb(30 25 20 / 0.68); backdrop-filter: blur(4px); }

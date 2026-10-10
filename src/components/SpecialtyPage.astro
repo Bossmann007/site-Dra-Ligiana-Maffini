@@ -40,6 +40,7 @@ const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
       <p class="prose-site mt-6 max-w-2xl text-lg leading-relaxed" data-hero-subtitle>{specialty.lead}</p>
       <p class="mt-4 text-sm text-ink-soft">
         {site.fullName} · {site.crm} · {site.rqe} · {site.address.neighborhood}, {site.address.city}
+        <a href="/sobre/" class="ml-2 font-medium text-gold-deep underline">Formação e trajetória</a>
       </p>
     </div>
   </section>
@@ -93,7 +94,7 @@ const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
 
     <section class="mt-16 border-t border-line/70 pt-12">
       <p class="eyebrow">Outras áreas de atuação</p>
-      <h2 class="heading-section mt-3 text-2xl">Especialidades relacionadas</h2>
+      <h2 class="heading-section mt-3 text-2xl">Áreas de cuidado relacionadas</h2>
       <ul class="mt-6 grid gap-3 sm:grid-cols-2">
         {
           related.map((item) => (
@@ -117,7 +118,7 @@ const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
         }
         <li>
           <a href="/especialidades/" class="card-soft block hover:border-gold/40" data-stagger-item>
-            <span class="font-display text-lg text-ink">Todas as especialidades</span>
+            <span class="font-display text-lg text-ink">Todas as áreas de cuidado</span>
             <span class="prose-site mt-2 block text-sm">Índice completo das áreas de atuação em Curitiba.</span>
           </a>
         </li>
