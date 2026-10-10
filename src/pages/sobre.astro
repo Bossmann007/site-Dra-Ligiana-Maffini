@@ -9,6 +9,7 @@ import { photos, aboutGallery } from '../data/photos';
 
 const description =
   'Dra. Ligiana Maffini, médica de família em Curitiba (CRM/PR 17731). Consultório no Cristo Rei e teleconsulta quando indicada.';
+import CareLinks from '../components/CareLinks.astro';
 ---
 
 <BaseLayout title="Dra. Ligiana Maffini, médica de família – CRM/PR 17731" description={description} path="/sobre/">
@@ -92,4 +93,5 @@ const description =
   </section>
 
   <DoctoraliaReview />
+  <CareLinks />
 </BaseLayout>

@@ -8,6 +8,14 @@ const careLinks = careNav.map((item) => ({
   href: localizedPath(locale, item.page),
   label: locale === 'pt-BR' ? item.label : translations[locale].pages[item.page].title,
 }));
+const emergency: Record<string, string> = {
+  'pt-BR': 'Em emergência, ligue 192 (SAMU).',
+  en: 'In an emergency, call 192 (SAMU, Brazil).',
+  de: 'Im Notfall: 192 (SAMU, Brasilien).',
+  it: 'In caso di emergenza, chiama il 192 (SAMU, Brasile).',
+  fr: 'En cas d’urgence, appelez le 192 (SAMU, Brésil).',
+  es: 'En una emergencia, llame al 192 (SAMU, Brasil).',
+};
 ---
 
 <footer class="relative overflow-hidden border-t border-line bg-brand-cream">
@@ -22,6 +30,7 @@ const careLinks = careNav.map((item) => ({
       <p class="mt-4 text-sm text-ink-soft">
         {site.crm} · {site.rqe}
       </p>
+      <p class="mt-2 text-sm text-ink-soft">{emergency[locale]}</p>
     </div>
 
     <nav class="text-sm" aria-label={ui?.care ?? 'Áreas de cuidado'} data-footer-reveal>
