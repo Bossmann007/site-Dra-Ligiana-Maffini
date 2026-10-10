@@ -386,6 +386,15 @@ for (const path of [
   if (!existsSync(join(root, path, 'index.html'))) fail(`first-visit page missing: ${path}`);
 }
 
+for (const slug of ['medicina-de-familia', 'medicina-do-estilo-de-vida', 'prevencao', 'saude-da-mulher', 'menopausa', 'emagrecimento', 'longevidade']) {
+  const file = join(root, slug, 'index.html');
+  if (!existsSync(file)) continue;
+  const html = readFileSync(file, 'utf8');
+  if (!html.includes('Dados e fontes')) fail(`${slug} missing "Dados e fontes" section`);
+  const externalSources = (html.match(/Fonte: <a href="https:\/\/(www\.who\.int|bvsms\.saude\.gov\.br|www\.gov\.br)[^"]+"/g) || []).length;
+  if (externalSources < 2) fail(`${slug} needs at least 2 cited sources, found ${externalSources}`);
+}
+
 if (failures.length) {
   console.error('verify-dist FAILED:');
   for (const f of failures) console.error(' -', f);

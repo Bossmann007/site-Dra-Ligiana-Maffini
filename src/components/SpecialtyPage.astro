@@ -22,6 +22,7 @@ const cluster = [
   { slug: 'saude-da-mulher', href: '/saude-da-mulher/', label: 'saúde da mulher 40+' },
 ] as const;
 const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
+import EvidenceBlock from './EvidenceBlock.astro';
 ---
 
 <BaseLayout
@@ -83,6 +84,8 @@ const clusterPeers = cluster.filter((item) => item.slug !== specialty.slug);
         </div>
       )
     }
+
+    <EvidenceBlock slug={specialty.slug} />
 
     <section class="mt-16 border-t border-line/70 pt-12">
       <p class="eyebrow">Perguntas frequentes</p>
